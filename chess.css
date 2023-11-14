@@ -36,8 +36,8 @@ body {
   background-color: #DAE3E6;
 }
 
-.cell.black {
-  background-color: #000 !important;
+.cell.yellow {
+  background-color: rgba(255, 255, 0, 0.479) !important;
 }
 
 .cell img {

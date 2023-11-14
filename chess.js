@@ -1,5 +1,5 @@
-document.querySelector(".board").addEventListener("click", makeBlack);
+document.querySelector(".board").addEventListener("click", makeYellow);
 
-function makeBlack(e) {
-  e.target.closest(".cell").classList.add("black");
+function makeYellow(e) {
+  e.target.closest(".cell").classList.add("yellow");
 }
