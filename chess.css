@@ -29,7 +29,7 @@ body {
 }
 
 .cell:hover {
-  filter: brightness(85%);
+  filter: brightness(50%);
 }
 
 .cell.dark {
