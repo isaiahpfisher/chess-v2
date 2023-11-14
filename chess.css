@@ -28,6 +28,10 @@ body {
   justify-content: center;
 }
 
+.cell:hover {
+  filter: brightness(85%);
+}
+
 .cell.dark {
   background-color: #86A1B4;
 }
