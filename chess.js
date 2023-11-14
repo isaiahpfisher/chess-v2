@@ -1,5 +1,5 @@
-document.querySelector(".board").addEventListener("click", fjaklsdfjhdla);
+document.querySelector(".board").addEventListener("click", makeBlack);
 
-function fjaklsdfjhdla(e) {
+function makeBlack(e) {
   e.target.closest(".cell").classList.add("black");
 }
