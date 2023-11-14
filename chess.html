@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Chess</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="chess.css">
 </head>
@@ -12,154 +12,186 @@
 
   <div class="container">
 
-    <div class="board">
+    <div class="game-container">
+      <div class="board">
+        <div class="message-box">
+          Hello, World!
+        </div>
+        <div class="row">
+          <div class="cell light">
+            <img src="assets/black-rook.svg">
+            <span class="row-number">8</span>
+          </div>
+          <div class="cell dark">
+            <img src="assets/black-knight.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/black-bishop.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/black-queen.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/black-king.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/black-bishop.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/black-knight.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/black-rook.svg">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell dark">
+            <img src="assets/black-pawn.svg">
+            <span class="row-number">7</span>
+          </div>
+          <div class="cell light">
+            <img src="assets/black-pawn.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/black-pawn.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/black-pawn.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/black-pawn.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/black-pawn.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/black-pawn.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/black-pawn.svg">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell light">
+            <span class="row-number">6</span>
+          </div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+        </div>
+        <div class="row">
+          <div class="cell dark">
+            <span class="row-number">5</span>
+          </div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+        </div>
+        <div class="row">
+          <div class="cell light">
+            <span class="row-number">4</span>
+          </div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+        </div>
+        <div class="row">
+          <div class="cell dark">
+            <span class="row-number">3</span>
+          </div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+          <div class="cell dark"></div>
+          <div class="cell light"></div>
+        </div>
+        <div class="row">
+          <div class="cell light">
+            <img src="assets/white-pawn.svg">
+            <span class="row-number">2</span>
+          </div>
+          <div class="cell dark">
+            <img src="assets/white-pawn.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/white-pawn.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/white-pawn.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/white-pawn.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/white-pawn.svg">
+          </div>
+          <div class="cell light">
+            <img src="assets/white-pawn.svg">
+          </div>
+          <div class="cell dark">
+            <img src="assets/white-pawn.svg">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell dark">
+            <img src="assets/white-rook.svg">
+            <span class="row-number">1</span>
+            <span class="col-letter">A</span>
+          </div>
+          <div class="cell light">
+            <img src="assets/white-knight.svg">
+            <span class="col-letter">B</span>
+          </div>
+          <div class="cell dark">
+            <img src="assets/white-bishop.svg">
+            <span class="col-letter">C</span>
+          </div>
+          <div class="cell light">
+            <img src="assets/white-queen.svg">
+            <span class="col-letter">D</span>
+          </div>
+          <div class="cell dark">
+            <img src="assets/white-king.svg">
+            <span class="col-letter">E</span>
+          </div>
+          <div class="cell light">
+            <img src="assets/white-bishop.svg">
+            <span class="col-letter">F</span>
+          </div>
+          <div class="cell dark">
+            <img src="assets/white-knight.svg">
+            <span class="col-letter">G</span>
+          </div>
+          <div class="cell light">
+            <img src="assets/white-rook.svg">
+            <span class="col-letter">H</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <div class="row">
-        <div class="cell light">
-          <img src="assets/black-rook.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/black-knight.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/black-bishop.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/black-queen.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/black-king.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/black-bishop.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/black-knight.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/black-rook.svg">
-        </div>
-      </div>
-      <div class="row">
-        <div class="cell dark">
-          <img src="assets/black-pawn.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/black-pawn.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/black-pawn.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/black-pawn.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/black-pawn.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/black-pawn.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/black-pawn.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/black-pawn.svg">
-        </div>
-      </div>
-      <div class="row">
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-      </div>
-      <div class="row">
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-      </div>
-      <div class="row">
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-      </div>
-      <div class="row">
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-        <div class="cell dark"></div>
-        <div class="cell light"></div>
-      </div>
-      <div class="row">
-        <div class="cell light">
-          <img src="assets/white-pawn.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/white-pawn.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/white-pawn.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/white-pawn.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/white-pawn.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/white-pawn.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/white-pawn.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/white-pawn.svg">
-        </div>
-      </div>
-      <div class="row">
-        <div class="cell dark">
-          <img src="assets/white-rook.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/white-knight.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/white-bishop.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/white-queen.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/white-king.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/white-bishop.svg">
-        </div>
-        <div class="cell dark">
-          <img src="assets/white-knight.svg">
-        </div>
-        <div class="cell light">
-          <img src="assets/white-rook.svg">
-        </div>
+    <div class="stats-container">
+      <div class="taken-pieces">
+        <h3>Taken Pieces</h3>
       </div>
 
-
+      <div class="move-history">
+        <h3>Move History</h3>
+      </div>
     </div>
 
   </div>

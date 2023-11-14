@@ -1,32 +1,109 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  /* font-size: var(--medium-text);
+  color: var(--text-color); */
+  box-sizing: border-box;
+}
+
 body {
   height: 100vh;
   width: 100vw;
 }
 
+
 .container {
   height: 100%;
   width: 100%;
+  padding: 25px;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-container {
+  width: 50%;
+  display: flex;
   align-items: center;
 }
 
+.stats-container {
+  width: 50%;
+  display: flex;
+  justify-content: space-evenly;
+  
+}
+
 .board {
-  height: 800px;
-  width: 800px;
+  height: 700px;
+  width: 700px;
+  min-height: 700px;
+  min-width: 700px;
+  position: relative;
+}
+
+.taken-pieces {
+  width: 45%;
+  height: 700px;
+  padding: 20px;
+  border: solid 2px black;
+  border-radius: 12px;
+  background-color: #ECDAB9;
+}
+
+.move-history {
+  width: 45%;
+  height: 700px;
+  padding: 20px;
+  border: solid 2px black;
+  border-radius: 12px;
+  background-color: #AE8A68;
+}
+
+.board .message-box {
+  z-index: 1;
+  position: absolute;
+  width: 75%;
+  height: 12.5%;
+  left: 12.5%;
+  top: 43.75%;
+  background-color: #FFF;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 10px 20px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
 }
 
 .row {
   display: flex;
+  height: 12.5%;
+  width: 100%;
 }
 
 .cell {
-  height: 100px;
-  width: 100px;
+  height: 100%;
+  width: 12.5%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: solid 2px transparent;
+  position: relative;
+}
+
+.row-number {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+}
+
+.col-letter {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
 }
 
 .cell:hover {
@@ -35,11 +112,11 @@ body {
 }
 
 .cell.dark {
-  background-color: #86A1B4;
+  background-color: #AE8A68;
 }
 
 .cell.light {
-  background-color: #DAE3E6;
+  background-color: #ECDAB9;
 }
 
 .cell.yellow {
@@ -47,8 +124,8 @@ body {
 }
 
 .cell img {
-  height: 90%;
-  width: 90%;
+  height: 80%;
+  width: 80%;
   pointer-events: none;
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
