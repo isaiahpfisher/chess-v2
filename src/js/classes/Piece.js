@@ -3,9 +3,18 @@
  * BASE class. Should never declare an instance of this class.
  */
 export class Piece {
+  imgSrc;
+  color;
   row;
   col;
-  imgSrc;
+  type;
+
+   constructor(type, color, row, col) {
+    this.type = type;
+    this.color = color;
+    this.row = row;
+    this.col = col;
+   }
 
   /**
    * Converts the given row and column indices into a string in A1 notation.
