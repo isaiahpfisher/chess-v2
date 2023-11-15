@@ -1,5 +1,4 @@
-import { BLACK, NUM_COLS, NUM_ROWS, WHITE } from "../constants.js";
-import { getA1Notation } from "../utilities.js";
+import { Piece } from "./Piece.js";
 import { Bishop } from "./pieces/Bishop.js";
 import { Empty } from "./pieces/Empty.js";
 import { King } from "./pieces/King.js";
@@ -8,10 +7,22 @@ import { Pawn } from "./pieces/Pawn.js";
 import { Queen } from "./pieces/Queen.js";
 import { Rook } from "./pieces/Rook.js";
 
+// some board-related constants - accessible from anywhere
+export const NUM_ROWS = 8;
+export const NUM_COLS = 8;
+export const WHITE = "white";
+export const BLACK = "black";
+
+
+/**
+   * Represents the chessboard in a chess game.
+   */
 export class Board {
   grid = [];
 
-  // builds the board with the starting layout
+  /**
+   * Builds the starting layout of a new game of chess.
+   */
   constructor() {
 
     // white first row
@@ -67,11 +78,13 @@ export class Board {
     this.grid[7][7] = new Rook(BLACK);
   }
 
-  // prints the Board to the screen
+  /**
+   * Prints the current board layout to the screen.
+   */
   print() {
      for (let row = 0; row < NUM_ROWS; row++) {
       for (let col = 0; col < NUM_COLS; col++) {
-        document.querySelector(`#${getA1Notation(row, col)}`).querySelector("img").src = this.grid[row][col].imgSrc;
+        document.querySelector(`#${Piece.getA1Notation(row, col)}`).querySelector("img").src = this.grid[row][col].imgSrc;
       }
      }
   }
