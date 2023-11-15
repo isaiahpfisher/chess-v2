@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Chess</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./src/styles/main.css">
+  <link rel="stylesheet" href="./src/styles/chessboard.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="left-column">
+      <div class="captured-pieces white"></div>
+      <div class="chessboard">
+        <div class="row">
+          <div class="cell light" data-row="8" data-col="1" id="A8">
+            <img draggable="true" src="./assets/black-rook.svg">
+            <span class="label number">8</span>
+          </div>
+          <div class="cell dark" data-row="8" data-col="2" id="B8">
+            <img draggable="true" src="./assets/black-knight.svg">
+          </div>
+          <div class="cell light" data-row="8" data-col="3" id="C8">
+            <img draggable="true" src="./assets/black-bishop.svg">
+          </div>
+          <div class="cell dark" data-row="8" data-col="4" id="D8">
+            <img draggable="true" src="./assets/black-king.svg">
+          </div>
+          <div class="cell light" data-row="8" data-col="5" id="E8">
+            <img draggable="true" src="./assets/black-queen.svg">
+          </div>
+          <div class="cell dark" data-row="8" data-col="6" id="F8">
+            <img draggable="true" src="./assets/black-bishop.svg">
+          </div>
+          <div class="cell light" data-row="8" data-col="7" id="G8">
+            <img draggable="true" src="./assets/black-knight.svg">
+          </div>
+          <div class="cell dark" data-row="8" data-col="8" id="H8">
+            <img draggable="true" src="./assets/black-rook.svg">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell dark" data-row="7" data-col="1" id="A7">
+            <img draggable="true" src="./assets/black-pawn.svg">
+            <span class="label number">7</span>
+          </div>
+          <div class="cell light" data-row="7" data-col="2" id="B7">
+            <img draggable="true" src="./assets/black-pawn.svg">
+          </div>
+          <div class="cell dark" data-row="7" data-col="3" id="C7">
+            <img draggable="true" src="./assets/black-pawn.svg">
+          </div>
+          <div class="cell light" data-row="7" data-col="4" id="D7">
+            <img draggable="true" src="./assets/black-pawn.svg">
+          </div>
+          <div class="cell dark" data-row="7" data-col="5" id="E7">
+            <img draggable="true" src="./assets/black-pawn.svg">
+          </div>
+          <div class="cell light" data-row="7" data-col="6" id="F7">
+            <img draggable="true" src="./assets/black-pawn.svg">
+          </div>
+          <div class="cell dark" data-row="7" data-col="7" id="G7">
+            <img draggable="true" src="./assets/black-pawn.svg">
+          </div>
+          <div class="cell light" data-row="7" data-col="8" id="H7">
+            <img draggable="true" src="./assets/black-pawn.svg">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell light" data-row="6" data-col="1" id="A6">
+            <img draggable="true" src="">
+            <span class="label number">6</span>
+          </div>
+          <div class="cell dark" data-row="6" data-col="2" id="B6">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="6" data-col="3" id="C6">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="6" data-col="4" id="D6">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="6" data-col="5" id="E6">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="6" data-col="6" id="F6">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="6" data-col="7" id="G6">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="6" data-col="8" id="H6">
+            <img draggable="true" src="">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell dark" data-row="5" data-col="1" id="A5">
+            <img draggable="true" src="">
+            <span class="label number">5</span>
+          </div>
+          <div class="cell light" data-row="5" data-col="2" id="B5">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="5" data-col="3" id="C5">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="5" data-col="4" id="D5">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="5" data-col="5" id="E5">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="5" data-col="6" id="D5">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="5" data-col="7" id="G5">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="5" data-col="8" id="H5">
+            <img draggable="true" src="">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell light" data-row="4" data-col="1" id="A4">
+            <img draggable="true" src="">
+            <span class="label number">4</span>
+          </div>
+          <div class="cell dark" data-row="4" data-col="2" id="B4">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="4" data-col="3" id="C4">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="4" data-col="4" id="D4">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="4" data-col="5" id="E4">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="4" data-col="6" id="F4">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="4" data-col="7" id="G4">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="4" data-col="8" id="H4">
+            <img draggable="true" src="">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell dark" data-row="3" data-col="1" id="A3">
+            <img draggable="true" src="">
+            <span class="label number">3</span>
+          </div>
+          <div class="cell light" data-row="3" data-col="2" id="B3">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="3" data-col="3" id="C3">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="3" data-col="4" id="D3">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="3" data-col="5" id="E3">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="3" data-col="6" id="F3">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell dark" data-row="3" data-col="7" id="G3">
+            <img draggable="true" src="">
+          </div>
+          <div class="cell light" data-row="3" data-col="8" id="H3">
+            <img draggable="true" src="">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell light" data-row="2" data-col="1" id="A2">
+            <img draggable="true" src="./assets/white-pawn.svg">
+            <span class="label number">2</span>
+          </div>
+          <div class="cell dark" data-row="2" data-col="2" id="B2">
+            <img draggable="true" src="./assets/white-pawn.svg">
+          </div>
+          <div class="cell light" data-row="2" data-col="3" id="C2">
+            <img draggable="true" src="./assets/white-pawn.svg">
+          </div>
+          <div class="cell dark" data-row="2" data-col="4" id="D2">
+            <img draggable="true" src="./assets/white-pawn.svg">
+          </div>
+          <div class="cell light" data-row="2" data-col="5" id="E2">
+            <img draggable="true" src="./assets/white-pawn.svg">
+          </div>
+          <div class="cell dark" data-row="2" data-col="6" id="F2">
+            <img draggable="true" src="./assets/white-pawn.svg">
+          </div>
+          <div class="cell light" data-row="2" data-col="7" id="G2">
+            <img draggable="true" src="./assets/white-pawn.svg">
+          </div>
+          <div class="cell dark" data-row="2" data-col="8" id="H2">
+            <img draggable="true" src="./assets/white-pawn.svg">
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell dark" data-row="1" data-col="1" id="A1">
+            <img draggable="true" src="./assets/white-rook.svg">
+            <span class="label number">1</span>
+            <span class="label letter">A</span>
+          </div>
+          <div class="cell light" data-row="1" data-col="2" id="B1">
+            <img draggable="true" src="./assets/white-knight.svg">
+            <span class="label letter">B</span>
+          </div>
+          <div class="cell dark" data-row="1" data-col="3" id="C1">
+            <img draggable="true" src="./assets/white-bishop.svg">
+            <span class="label letter">C</span>
+          </div>
+          <div class="cell light" data-row="1" data-col="4" id="D1">
+            <img draggable="true" src="./assets/white-king.svg">
+            <span class="label letter">D</span>
+          </div>
+          <div class="cell dark" data-row="1" data-col="5" id="E1">
+            <img draggable="true" src="./assets/white-queen.svg">
+            <span class="label letter">E</span>
+          </div>
+          <div class="cell light" data-row="1" data-col="6" id="F1">
+            <img draggable="true" src="./assets/white-bishop.svg">
+            <span class="label letter">F</span>
+          </div>
+          <div class="cell dark" data-row="1" data-col="7" id="G1">
+            <img draggable="true" src="./assets/white-knight.svg">
+            <span class="label letter">G</span>
+          </div>
+          <div class="cell light" data-row="1" data-col="8" id="H1">
+            <img draggable="true" src="./assets/white-rook.svg">
+            <span class="label letter">H</span>
+          </div>
+        </div>
+      </div>
+      <div class="captured-pieces black"></div>
+    </div>
+  </div>
+</body>
+
+<script src="./src/js/main.js"></script>
+
+</html>
