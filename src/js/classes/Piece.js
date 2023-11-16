@@ -1,5 +1,7 @@
+import { EMPTY } from "./Board";
+
 /**
- * Represents a piece on a chessboard. 
+ * Represents a piece on a chessboard.
  * BASE class. Should never declare an instance of this class.
  */
 export class Piece {
@@ -9,12 +11,17 @@ export class Piece {
   col;
   type;
 
-   constructor(type, color, row, col) {
+  constructor(type, color, row, col) {
     this.type = type;
     this.color = color;
     this.row = row;
     this.col = col;
-   }
+    this.hasMoved = false;
+  }
+
+  isEmpty() {
+    return this.type == EMPTY;
+  }
 
   /**
    * Converts the given row and column indices into a string in A1 notation.
@@ -25,7 +32,7 @@ export class Piece {
   static getA1Notation(row, col) {
     let letter = (col + 1 + 9).toString(36).toUpperCase();
     let number = row + 1;
-    return (letter + number);
+    return letter + number;
   }
 
   /**
@@ -36,7 +43,7 @@ export class Piece {
   static getCoordinates(a1Notation) {
     return {
       row: parseInt(a1Notation[1]) - 1, // minus one to get 0-based index
-      col: a1Notation.charCodeAt(0) - 65 // 65 is the charCode of 'A'
-    }
+      col: a1Notation.charCodeAt(0) - 65, // 65 is the charCode of 'A'
+    };
   }
 }

@@ -2,11 +2,10 @@ import { KING } from "../Board.js";
 import { Piece } from "../Piece.js";
 
 /**
- * Represents a king on a chessboard. 
+ * Represents a king on a chessboard.
  * Derived class of Piece.
  */
 export class King extends Piece {
-
   /**
    * @param {string} color - The color of the King (either BLACK or WHITE).
    * @param {number} row - The row of the King on the Board (0 - 7).
@@ -17,17 +16,21 @@ export class King extends Piece {
     this.imgSrc = `./assets/${color}-king.svg`; // Set the image source for the King based on its color
   }
 
-   /**
+  isInCheck() {
+    return false;
+  }
+
+  /**
    * Checks if a King can make the given move
    * @param {Array} grid - the board layout before the given move
    * @param {string} originId - id of starting space (e.g. A2 or H8)
    * @param {string} destId - id of ending space (e.g. A2 or H8)
    * @returns {boolean}
    */
-   isValidMove(grid, originId, destId) {
+  isValidMove(grid, originId, destId) {
     let startRow = Piece.getCoordinates(originId).row;
     let startCol = Piece.getCoordinates(originId).col;
-    
+
     let endRow = Piece.getCoordinates(destId).row;
     let endCol = Piece.getCoordinates(destId).col;
 
@@ -38,16 +41,16 @@ export class King extends Piece {
     let colDiff = Math.abs(startCol - endCol);
 
     // where rook SHOULD be
-    let rookRow = (startPiece.color == BLACK ? 7 : 0);
-    let rookCol = (endCol < startCol ? 0 : 7);
+    let rookRow = startPiece.color == BLACK ? 7 : 0;
+    let rookCol = endCol < startCol ? 0 : 7;
     const rookSpot = grid[rookRow][rookCol];
 
     // the spot the king passes through
-    let midRow = (startPiece.color == BLACK ? 7 : 0);
-    let midCol = (endCol < startCol ? 3 : 5);
+    let midRow = startPiece.color == BLACK ? 7 : 0;
+    let midCol = endCol < startCol ? 3 : 5;
 
     // moved non-linearly
-    if ((rowDiff != colDiff) && !(rowDiff == 0 || colDiff == 0)) {
+    if (rowDiff != colDiff && !(rowDiff == 0 || colDiff == 0)) {
       checkResult = false;
     }
     // castling
