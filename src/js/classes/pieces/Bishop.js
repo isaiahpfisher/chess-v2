@@ -1,3 +1,4 @@
+import { BISHOP } from "../Board.js";
 import { Piece } from "../Piece.js";
 
 /**
@@ -12,7 +13,7 @@ export class Bishop extends Piece {
    * @param {number} col - The column of the Bishop on the Board (0 - 7).
    */
   constructor(color, row, col) {
-    super(color, row, col);
+    super(BISHOP, color, row, col);
     this.imgSrc = `./assets/${color}-bishop.svg`; // Set the image source for the Bishop based on its color
   }
 
@@ -35,7 +36,7 @@ export class Bishop extends Piece {
     let colDiff = Math.abs(startCol - endCol);
 
    if (rowDiff != colDiff) {
-	  checkResult = "Bishops can only move diagonally. Try Again.";
+	  checkResult = false;
   }
 
   return checkResult;
