@@ -25,6 +25,55 @@ export class King extends Piece {
    * @returns {boolean}
    */
    isValidMove(grid, originId, destId) {
-    return true;
+    let startRow = Piece.getCoordinates(originId).row;
+    let startCol = Piece.getCoordinates(originId).col;
+    
+    let endRow = Piece.getCoordinates(destId).row;
+    let endCol = Piece.getCoordinates(destId).col;
+
+    let startPiece = grid[startRow][startCol];
+
+    let checkResult = true;
+    let rowDiff = Math.abs(startRow - endRow);
+    let colDiff = Math.abs(startCol - endCol);
+
+    // where rook SHOULD be
+    let rookRow = (startPiece.color == BLACK ? 7 : 0);
+    let rookCol = (endCol < startCol ? 0 : 7);
+    const rookSpot = grid[rookRow][rookCol];
+
+    // the spot the king passes through
+    let midRow = (startPiece.color == BLACK ? 7 : 0);
+    let midCol = (endCol < startCol ? 3 : 5);
+
+    // moved non-linearly
+    if ((rowDiff != colDiff) && !(rowDiff == 0 || colDiff == 0)) {
+      checkResult = false;
+    }
+    // castling
+    else if (colDiff == 2 && rowDiff == 0) {
+      // if either piece has already moved
+      if (startPiece.hasMoved || (rookSpot.type == ROOK && rookSpot.hasMoved)) {
+        checkResult = false;
+      }
+      // any pieces between them
+      else if (endCol < startCol && !grid[rookRow][rookCol + 1].isEmpty()) {
+        checkResult = false;
+      }
+      // currently in check
+      else if (startPiece.isInCheck(grid, -1, -1, -1, -1)) {
+        checkResult = false;
+      }
+      // pass through a check
+      else if (startPiece.isInCheck(grid, startRow, startCol, midRow, midCol)) {
+        checkResult = false;
+      }
+    }
+    // moved more than one space
+    else if (rowDiff > 1 || colDiff > 1) {
+      checkResult = false;
+    }
+
+    return checkResult;
   }
 }
