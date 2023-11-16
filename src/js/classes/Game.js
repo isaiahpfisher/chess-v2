@@ -79,8 +79,6 @@ export class Game {
     e.preventDefault();
     let originId = e.dataTransfer.getData("text");
     let destId = e.target.closest(".cell").id;
-    if (this.board.isValidMove(originId, destId)) {
-      // this.board.move();
-    }
+    console.log(this.board.isValidMove(originId, destId));
   }
 }

@@ -24,6 +24,20 @@ export class Bishop extends Piece {
    * @returns {boolean}
    */
    isValidMove(grid, originId, destId) {
-    return true;
+    let startRow = Piece.getCoordinates(originId).row;
+    let startCol = Piece.getCoordinates(originId).col;
+    
+    let endRow = Piece.getCoordinates(destId).row;
+    let endCol = Piece.getCoordinates(destId).col;
+
+    let checkResult = true;
+    let rowDiff = Math.abs(startRow - endRow);
+    let colDiff = Math.abs(startCol - endCol);
+
+   if (rowDiff != colDiff) {
+	  checkResult = "Bishops can only move diagonally. Try Again.";
+  }
+
+  return checkResult;
   }
 }
