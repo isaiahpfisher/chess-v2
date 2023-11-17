@@ -6,16 +6,15 @@
   <title>Chess</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="assets/chess-logo.png">
-  <link rel="stylesheet" href="./src/styles/main.css">
-  <link rel="stylesheet" href="./src/styles/chessboard.css">
+  <link rel="stylesheet" type="text/css" href="./src/styles/main.css">
+  <link rel="stylesheet" type="text/css" href="./src/styles/chessboard.css">
+  <link rel="stylesheet" type="text/css" href="./src/styles/info.css">
 </head>
 
 <body>
   <div class="container">
 
     <div class="left-column">
-
-      <div class="captured-pieces white"></div>
 
       <div class="chessboard">
 
@@ -260,8 +259,10 @@
         </div>
       </div>
 
-      <div class="captured-pieces black"></div>
-
+    </div>
+    <div class="right-column">
+      <div class="game-info">Game Info</div>
+      <div class="move-history">Move History</div>
     </div>
   </div>
 </body>
