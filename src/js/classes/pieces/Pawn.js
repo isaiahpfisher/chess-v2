@@ -1,5 +1,6 @@
 import { BLACK_DIRECTION, PAWN, WHITE, WHITE_DIRECTION } from "../Board.js";
 import { Piece } from "../Piece.js";
+import { Empty } from "./Empty.js";
 
 /**
  * Represents a pawn on a chessboard.
@@ -71,4 +72,37 @@ export class Pawn extends Piece {
 
     return validMove;
   }
+
+  /**
+   * Moves a piece on the grid from the originId to the destId.
+   * @param {Array<Array>} grid - The grid representing the chessboard.
+   * @param {number} originId - The id of the piece's current position.
+   * @param {number} destId - The id of the piece's destination position.
+   * @returns {void}
+   */
+  move(grid, originId, destId) {
+    let direction = this.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
+
+    let startCoordinates = Piece.getCoordinates(originId);
+    let endCoordinates = Piece.getCoordinates(destId);
+
+    let rowDiff = Math.abs(startCoordinates.row - endCoordinates.row);
+
+    // if en passant happened, remove the enemy piece
+    if (grid[endCoordinates.row - direction][endCoordinates.col].enPassant) {
+      grid[endCoordinates.row - direction][endCoordinates.col] = new Empty();
+    }
+
+    // if pawn moved two spaces (which is only possible on first turn), make it vulnerable to en passant attack
+    if (rowDiff == 2) {
+      this.enPassant = true;
+    }
+
+    // handle pawn promotion
+    if (endCoordinates.row == (this.color == WHITE ? 7 : 0)) {
+      promotePawn(grid);
+    }
+  }
+
+  promotePawn(grid) {}
 }
