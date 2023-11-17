@@ -1,4 +1,4 @@
-import { BLACK_DIRECTION, KNIGHT, WHITE_DIRECTION } from "../Board.js";
+import { BLACK_DIRECTION, KNIGHT, WHITE, WHITE_DIRECTION } from "../Board.js";
 import { Piece } from "../Piece.js";
 
 /**

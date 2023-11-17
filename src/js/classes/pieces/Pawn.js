@@ -1,4 +1,4 @@
-import { PAWN } from "../Board.js";
+import { BLACK_DIRECTION, PAWN, WHITE, WHITE_DIRECTION } from "../Board.js";
 import { Piece } from "../Piece.js";
 
 /**
@@ -25,7 +25,7 @@ export class Pawn extends Piece {
    * @returns {boolean}
    */
   isValidMove(grid, originId, destId) {
-    let validMove = false;
+    let validMove = true;
     let direction = this.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
 
     let startCoordinates = Piece.getCoordinates(originId);
@@ -62,7 +62,7 @@ export class Pawn extends Piece {
     }
     // tried to move diagonallly (without taking enemy or en passant)
     else if (
-      startCoordinates.row != endCoordinates.row &&
+      startCoordinates.col != endCoordinates.col &&
       grid[endCoordinates.row][endCoordinates.col].isEmpty() &&
       !grid[endCoordinates.row - direction][endCoordinates.col].enPassant
     ) {

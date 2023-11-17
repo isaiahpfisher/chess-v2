@@ -107,19 +107,19 @@ export class Board {
    * @returns {boolean}
    */
   isValidMove(originId, destId) {
-    let valid = true;
+    let validMove = true;
+
+    let startCoordinates = Piece.getCoordinates(originId);
+
+    let startPiece = this.grid[startCoordinates.row][startCoordinates.col];
 
     // general checks (e.g. moved on top of own piece)
 
     // piece-specific checks
-    if (
-      !document
-        .getElementById(originId)
-        .piece.isValidMove(this.grid, originId, destId)
-    ) {
-      valid = false;
+    if (!startPiece.isValidMove(this.grid, originId, destId)) {
+      validMove = false;
     }
 
-    return valid;
+    return validMove;
   }
 }
