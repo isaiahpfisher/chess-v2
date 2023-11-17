@@ -1,4 +1,4 @@
-import { EMPTY } from "./Board";
+import { EMPTY } from "./Board.js";
 
 /**
  * Represents a piece on a chessboard.

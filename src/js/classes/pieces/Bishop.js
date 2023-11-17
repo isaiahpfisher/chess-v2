@@ -2,11 +2,10 @@ import { BISHOP } from "../Board.js";
 import { Piece } from "../Piece.js";
 
 /**
- * Represents a bishop on a chessboard. 
+ * Represents a bishop on a chessboard.
  * Derived class of Piece.
  */
 export class Bishop extends Piece {
-
   /**
    * @param {string} color - The color of the Bishop (either BLACK or WHITE).
    * @param {number} row - The row of the Bishop on the Board (0 - 7).
@@ -17,28 +16,25 @@ export class Bishop extends Piece {
     this.imgSrc = `./assets/${color}-bishop.svg`; // Set the image source for the Bishop based on its color
   }
 
-   /**
+  /**
    * Checks if a Bishop can make the given move
    * @param {Array} grid - the board layout before the given move
    * @param {string} originId - id of starting space (e.g. A2 or H8)
    * @param {string} destId - id of ending space (e.g. A2 or H8)
    * @returns {boolean}
    */
-   isValidMove(grid, originId, destId) {
-    let startRow = Piece.getCoordinates(originId).row;
-    let startCol = Piece.getCoordinates(originId).col;
-    
-    let endRow = Piece.getCoordinates(destId).row;
-    let endCol = Piece.getCoordinates(destId).col;
+  isValidMove(grid, originId, destId) {
+    let startCoordinates = Piece.getCoordinates(originId);
+    let endCoordinates = Piece.getCoordinates(destId);
 
-    let checkResult = true;
-    let rowDiff = Math.abs(startRow - endRow);
-    let colDiff = Math.abs(startCol - endCol);
+    let validMove = true;
+    let rowDiff = Math.abs(startCoordinates.row - endCoordinates.row);
+    let colDiff = Math.abs(startCoordinates.col - endCoordinates.col);
 
-   if (rowDiff != colDiff) {
-	  checkResult = false;
-  }
+    if (rowDiff != colDiff) {
+      validMove = false;
+    }
 
-  return checkResult;
+    return validMove;
   }
 }

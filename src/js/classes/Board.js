@@ -20,11 +20,12 @@ export const ROOK = "rook";
 export const QUEEN = "queen";
 export const KING = "king";
 export const EMPTY = "empty";
-
+export const WHITE_DIRECTION = 1;
+export const BLACK_DIRECTION = -1;
 
 /**
-   * Represents the chessboard in a chess game.
-   */
+ * Represents the chessboard in a chess game.
+ */
 export class Board {
   grid = [];
 
@@ -32,7 +33,6 @@ export class Board {
    * Builds the starting layout of a new game of chess.
    */
   constructor() {
-
     // white first row
     this.grid[0] = [];
     this.grid[0][0] = new Rook(WHITE, 0, 0);
@@ -73,7 +73,7 @@ export class Board {
     this.grid[6][5] = new Pawn(BLACK, 6, 5);
     this.grid[6][6] = new Pawn(BLACK, 6, 6);
     this.grid[6][7] = new Pawn(BLACK, 6, 7);
-    
+
     // black first row
     this.grid[7] = [];
     this.grid[7][0] = new Rook(BLACK, 7, 0);
@@ -90,13 +90,14 @@ export class Board {
    * Prints the current board layout to the screen.
    */
   print() {
-     for (let row = 0; row < NUM_ROWS; row++) {
+    for (let row = 0; row < NUM_ROWS; row++) {
       for (let col = 0; col < NUM_COLS; col++) {
         let cellId = Piece.getA1Notation(row, col);
         document.querySelector(`#${cellId}`).piece = this.grid[row][col];
-        document.querySelector(`#${cellId}`).querySelector("img").src = this.grid[row][col].imgSrc;
+        document.querySelector(`#${cellId}`).querySelector("img").src =
+          this.grid[row][col].imgSrc;
       }
-     }
+    }
   }
 
   /**
@@ -107,11 +108,17 @@ export class Board {
    */
   isValidMove(originId, destId) {
     let valid = true;
-    
+
     // general checks (e.g. moved on top of own piece)
 
     // piece-specific checks
-    if (!document.getElementById(originId).piece.isValidMove(this.grid, originId, destId)) { valid = false; }
+    if (
+      !document
+        .getElementById(originId)
+        .piece.isValidMove(this.grid, originId, destId)
+    ) {
+      valid = false;
+    }
 
     return valid;
   }
