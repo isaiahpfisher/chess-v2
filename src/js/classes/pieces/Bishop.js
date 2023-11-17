@@ -39,20 +39,11 @@ export class Bishop extends Piece {
   }
 
   /**
-   * Moves a piece on the grid from its current position (originId) to a specified position (destId).
+   * Does piece-specific move actions for the Bishop
    * @param {Array} grid - The grid representing the game board.
    * @param {string} originId - The ID of the piece's current position.
    * @param {string} destId - The ID of the destination position.
+   * @returns {void}
    */
-  move(grid, originId, destId) {
-    // Get the end coordinates (row and column) of the destination position
-    let endCoordinates = Piece.getCoordinates(destId);
-
-    // Set the piece's row and column to the end coordinates
-    this.row = endCoordinates.row;
-    this.col = endCoordinates.col;
-
-    // Mark the piece as moved
-    this.hasMoved = true;
-  }
+  move(grid, originId, destId) {}
 }
