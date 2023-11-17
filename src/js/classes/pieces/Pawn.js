@@ -100,9 +100,11 @@ export class Pawn extends Piece {
 
     // handle pawn promotion
     if (endCoordinates.row == (this.color == WHITE ? 7 : 0)) {
-      promotePawn(grid);
+      this.promotePawn(grid);
     }
   }
 
-  promotePawn(grid) {}
+  promotePawn(grid) {
+    return true;
+  }
 }

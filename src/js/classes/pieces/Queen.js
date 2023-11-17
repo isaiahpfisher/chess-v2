@@ -24,7 +24,7 @@ export class Queen extends Piece {
    * @returns {boolean}
    */
   isValidMove(grid, originId, destId) {
-    let validMove;
+    let validMove = true;
 
     let startCoordinates = Piece.getCoordinates(originId);
     let endCoordinates = Piece.getCoordinates(destId);
