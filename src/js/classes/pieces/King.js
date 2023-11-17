@@ -1,5 +1,6 @@
-import { KING } from "../Board.js";
+import { BLACK, KING } from "../Board.js";
 import { Piece } from "../Piece.js";
+import { Empty } from "./Empty.js";
 
 /**
  * Represents a king on a chessboard.
@@ -76,5 +77,30 @@ export class King extends Piece {
     }
 
     return validMove;
+  }
+
+  move(grid, originId, destId) {
+    let startCoordinates = Piece.getCoordinates(originId);
+    let endCoordinates = Piece.getCoordinates(destId);
+
+    let colDiff = Math.abs(startCoordinates.col - endCoordinates.col);
+
+    // if castling . . .
+    if (colDiff == 2) {
+      // get the rook
+      let rookRow = this.color == BLACK ? 7 : 0;
+      let rookCol = endCoordinates.col < startCoordinates.col ? 0 : 7;
+
+      // rook destination
+      let rookRowDest = this.color == BLACK ? 7 : 0;
+      let rookColDest =
+        endCoordinates.col < startCoordinates.col
+          ? endCoordinates.col + 1
+          : endCoordinates.col - 1;
+
+      // move the rook
+      grid[rookRowDest][rookColDest] = grid[rookRow][rookCol];
+      grid[rookRow][rookCol] = new Empty();
+    }
   }
 }
