@@ -1,10 +1,9 @@
 import { Board } from "./Board.js";
 
 /**
-   * Represents a game of chess.
-   */
+ * Represents a game of chess.
+ */
 export class Game {
-
   /**
    * Constructs new instance of Game.
    */
@@ -25,7 +24,7 @@ export class Game {
    * @returns {void}
    */
   setupDragDrop() {
-    document.querySelectorAll(".chessboard .row .cell").forEach(img => {
+    document.querySelectorAll(".chessboard .row .cell").forEach((img) => {
       let newImg = img.cloneNode(true);
       img.parentNode.replaceChild(newImg, img);
 
@@ -42,7 +41,7 @@ export class Game {
    * @param {Event} e
    * @returns {void}
    */
-  dragOverSpace (e) {
+  dragOverSpace(e) {
     e.preventDefault();
     // e.target.closest(".cell").classList.add(""); TODO: Add a class here to style spaces when hovered over
   }
@@ -75,10 +74,15 @@ export class Game {
    * @param {Event} e
    * @returns {void}
    */
-  dropPiece = (e) => { // weird syntax so that this references the Game instance
+  dropPiece = (e) => {
+    // weird syntax so that this references the Game instance
     e.preventDefault();
     let originId = e.dataTransfer.getData("text");
     let destId = e.target.closest(".cell").id;
-    console.log(this.board.isValidMove(originId, destId));
-  }
+
+    if (this.board.isValidMove(originId, destId)) {
+      // make the move
+      this.board.move(originId, destId);
+    }
+  };
 }

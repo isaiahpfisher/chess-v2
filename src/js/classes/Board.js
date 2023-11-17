@@ -122,4 +122,30 @@ export class Board {
 
     return validMove;
   }
+
+  /**
+   * Moves a piece from its current position (originId) to a specified position (destId) on the grid.
+   * @param {string} originId - The ID of the piece's current position.
+   * @param {string} destId - The ID of the destination position.
+   */
+  move(originId, destId) {
+    // Get the start coordinates (row and column) of the origin position
+    let startCoordinates = Piece.getCoordinates(originId);
+
+    // Get the end coordinates (row and column) of the destination position
+    let endCoordinates = Piece.getCoordinates(destId);
+
+    // Set the piece at the destination position to be the same as the piece at the origin position
+    this.grid[endCoordinates.row][endCoordinates.col] =
+      this.grid[startCoordinates.row][startCoordinates.col];
+
+    // Set the piece at the origin position to be an Empty piece
+    this.grid[startCoordinates.row][startCoordinates.col] = new Empty(
+      startCoordinates.row,
+      startCoordinates.col
+    );
+
+    // Print the updated grid
+    this.print();
+  }
 }
