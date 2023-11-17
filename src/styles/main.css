@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* define commonly used variables */
 :root {
   --light-color: #ECDAB9;
@@ -15,27 +19,31 @@
   user-select: none;
 }
 
-.container {
-  height: 100vh;
+body {
   width: 100vw;
+  height: 100vh;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
   padding: 25px;
   display: flex;
   align-items: center;
-  min-width: 1000px;
+  justify-content: center;
+  min-width: 1460px;
+  max-width: 1460px;
 }
 
-/* Contains chessboard and captured pieces */
+/* Contains chessboard */
 .left-column {
   width: 50%;
-  min-width: 400px;
   max-height: 880px;
 }
 
-/* Contains move history (hidden at breakpoint) */
+/* Contains game info */
 .right-column {
-  height: 100%;
-  display: flex;
   width: 50%;
-  padding: 10px;
   max-height: 880px;
+  margin-left: 25px;
 }

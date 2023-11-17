@@ -9,7 +9,8 @@ export class Game {
    */
   constructor() {
     this.board = new Board();
-    this.setupDragDrop();
+    this.computerMode = true;
+    this.setupEventListeners();
   }
 
   /**
@@ -20,10 +21,11 @@ export class Game {
   }
 
   /**
-   * Adds event listeners to every chess piece on the board for drag-and-drop functionality.
+   * Clears existing and adds new event listeners at start of game.
    * @returns {void}
    */
-  setupDragDrop() {
+  setupEventListeners() {
+    // for drag-and-drop
     document.querySelectorAll(".chessboard .row .cell").forEach((img) => {
       let newImg = img.cloneNode(true);
       img.parentNode.replaceChild(newImg, img);
@@ -33,6 +35,23 @@ export class Game {
       newImg.addEventListener("dragleave", this.dragLeaveSpace);
       newImg.addEventListener("dragstart", this.dragPieceStart);
     });
+
+    // for game mode
+    document
+      .querySelector("#mode-toggle")
+      .addEventListener("click", this.changeGameMode);
+  }
+
+  changeGameMode(e) {
+    this.computerMode = !this.computerMode;
+    document.getElementById("mode-toggle").classList.toggle("bg-indigo-600");
+    document.getElementById("mode-toggle").classList.toggle("bg-gray-200");
+    document
+      .getElementById("mode-toggle-span")
+      .classList.toggle("translate-x-5");
+    document
+      .getElementById("mode-toggle-span")
+      .classList.toggle("translate-x-0");
   }
 
   /**

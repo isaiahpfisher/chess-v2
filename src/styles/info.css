@@ -1,23 +1,7 @@
 .game-info {
-  width: 50%;
-  height: 100%;
-  background-color: orange;
-}
-
-.move-history {
-  width: 50%;
-  height: 100%;
-  background-color: blue;
-}
-
-.captured-pieces {
-  height: 20px;
-}
-
-.captured-pieces.white {
-  background-color: green;
-}
-
-.captured-pieces.black {
-  background-color: green;
+  width: 100%;
+  /* aspect-ratio: 1 / 1; */
+  min-width: 300px;
+  min-height: 300px;
+  height: 705px;
 }
