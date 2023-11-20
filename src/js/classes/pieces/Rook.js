@@ -38,4 +38,13 @@ export class Rook extends Piece {
 
     return validMove;
   }
+
+  /**
+   * Does piece-specific move actions for the Rook
+   * @param {Array} grid - The grid representing the game board.
+   * @param {string} originId - The ID of the piece's current position.
+   * @param {string} destId - The ID of the destination position.
+   * @returns {void}
+   */
+  move(grid, originId, destId) {}
 }
