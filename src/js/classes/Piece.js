@@ -20,10 +20,23 @@ export class Piece {
     this.hasMoved = false;
   }
 
+  /**
+   * Checks if the value is empty.
+   *
+   * @returns {boolean} Returns true if the value is empty, otherwise returns false.
+   */
   isEmpty() {
     return this.type == EMPTY;
   }
 
+  /**
+   * Checks if there is a piece in the way between the specified origin and destination coordinates on the grid.
+   *
+   * @param {Array} grid - The grid containing the pieces.
+   * @param {string} originId - The ID of the origin coordinate.
+   * @param {string} destId - The ID of the destination coordinate.
+   * @returns {boolean} Returns true if there is a piece in the way, otherwise returns false.
+   */
   isPieceInWay(grid, originId, destId) {
     let pieceInWay = false;
 
