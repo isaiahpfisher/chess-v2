@@ -100,7 +100,7 @@ export class King extends Piece {
 
       // move the rook
       grid[rookRowDest][rookColDest] = grid[rookRow][rookCol];
-      grid[rookRow][rookCol] = new Empty();
+      grid[rookRow][rookCol] = new Empty(rookRow, rookCol);
     }
   }
 }
