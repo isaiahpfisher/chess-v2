@@ -130,14 +130,21 @@ export class Pawn extends Piece {
     }
   }
 
+  /**
+   * Function to promote a pawn in a chess game.
+   * @param {Array} grid - The game grid representing the chessboard.
+   * @returns {void}
+   */
   promotePawn(grid) {
+    // Check if the game is not in computer mode
     if (!Game.computerMode) {
+      // Get the selected promotion value from the radio input
       this.promotionSelection = document.querySelector(
         'input[name="promotion-selection"]:checked'
       ).value;
     }
 
-    // problem is because execution is returning to Board.move() before users makes their choice
+    // Based on the promotion selection, create a new piece and replace the pawn on the grid
     switch (this.promotionSelection) {
       case QUEEN:
         grid[this.row][this.col] = new Queen(this.color, this.row, this.col);
@@ -152,10 +159,14 @@ export class Pawn extends Piece {
         grid[this.row][this.col] = new Knight(this.color, this.row, this.col);
         break;
       default:
+        // If no valid selection is found, default to promoting to a queen
         grid[this.row][this.col] = new Queen(this.color, this.row, this.col);
     }
 
+    // Print the updated board
     this.board.print();
+
+    // Hide the pawn promotion interface
     this.hidePawnPromotion();
   }
 
