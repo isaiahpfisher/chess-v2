@@ -1,5 +1,6 @@
 import {
   BISHOP,
+  BLACK,
   BLACK_DIRECTION,
   EMPTY,
   KNIGHT,
@@ -121,7 +122,7 @@ export class Pawn extends Piece {
 
     // handle pawn promotion
     if (endCoordinates.row == (this.color == WHITE ? 7 : 0)) {
-      if (Game.computerMode) {
+      if (this.color == BLACK && Game.computerMode) {
         this.promotionSelection = QUEEN;
         this.promotePawn(grid);
       } else {
@@ -137,7 +138,7 @@ export class Pawn extends Piece {
    */
   promotePawn(grid) {
     // Check if the game is not in computer mode
-    if (!Game.computerMode) {
+    if (!(Game.computerMode && this.color == BLACK)) {
       // Get the selected promotion value from the radio input
       this.promotionSelection = document.querySelector(
         'input[name="promotion-selection"]:checked'
@@ -216,9 +217,10 @@ export class Pawn extends Piece {
         // Animation finished callback
       });
 
-    document
-      .getElementById("promote-pawn")
-      .addEventListener("click", () => this.promotePawn.bind(this)(grid));
+    let btn = document.getElementById("promote-pawn");
+    let newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener("click", () => this.promotePawn.bind(this)(grid));
   }
 
   /**
