@@ -103,18 +103,56 @@ export class Board {
 
   /**
    * Checks if the given move is valid.
+   * @param {string} turn - either WHITE or BLACK
    * @param {string} originId - id of starting space (e.g. A2 or H8)
    * @param {string} destId - id of ending space (e.g. A2 or H8)
    * @returns {boolean}
    */
-  isValidMove(originId, destId) {
+  isValidMove(turn, originId, destId) {
     let validMove = true;
 
     let startCoordinates = Piece.getCoordinates(originId);
+    let endCoordinates = Piece.getCoordinates(destId);
 
+    // get pieces
     let startPiece = this.grid[startCoordinates.row][startCoordinates.col];
+    let endPiece = this.grid[endCoordinates.row][endCoordinates.col];
 
-    // general checks (e.g. moved on top of own piece)
+    // Checks if the move is on the board
+    if (
+      input != "-1" &&
+      (startCol < 0 ||
+        startCol > 7 ||
+        startRow < 0 ||
+        startRow > 7 ||
+        endCol < 0 ||
+        endCol > 7 ||
+        endRow < 0 ||
+        endRow > 7)
+    ) {
+      validMove = false;
+    }
+
+    // Check if startPiece is invalid
+    else if (startPiece.isEmpty()) {
+      validMove = false;
+    }
+
+    // Check if startPiece is from the right team
+    else if (currentTurn != startPiece.color) {
+      validMove = false;
+    }
+
+    // Checks if move is on top of same team
+    else if (startPiece.color == endPiece.color) {
+      validMove = false;
+    }
+    // checking if piece is in the way
+    else if (
+      startPiece.isPieceInWay(grid, startRow, startCol, endRow, endCol)
+    ) {
+      validMove = false;
+    }
 
     // piece-specific checks
     if (!startPiece.isValidMove(this.grid, originId, destId)) {

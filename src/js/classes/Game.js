@@ -1,4 +1,4 @@
-import { Board } from "./Board.js";
+import { BLACK, Board, WHITE } from "./Board.js";
 
 /**
  * Represents a game of chess.
@@ -12,6 +12,8 @@ export class Game {
   constructor() {
     this.board = new Board();
     this.setupEventListeners();
+    this.turnCount = 0;
+    this.turn = WHITE;
   }
 
   /**
@@ -125,9 +127,11 @@ export class Game {
     let originId = e.dataTransfer.getData("text");
     let destId = e.target.closest(".cell").id;
 
-    if (this.board.isValidMove(originId, destId)) {
+    if (this.board.isValidMove(turn, originId, destId)) {
       // make the move
       this.board.move(originId, destId);
+      this.turnCount++;
+      this.turn = this.turn == WHITE ? BLACK : WHITE;
     }
   };
 }
