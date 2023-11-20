@@ -1,0 +1,7 @@
+.game-info {
+  width: 100%;
+  /* aspect-ratio: 1 / 1; */
+  min-width: 300px;
+  min-height: 300px;
+  height: 705px;
+}
