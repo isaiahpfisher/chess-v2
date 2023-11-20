@@ -10,6 +10,7 @@ export class Piece {
   row;
   col;
   type;
+  enPassant = false;
 
   constructor(type, color, row, col) {
     this.type = type;

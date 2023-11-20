@@ -28,6 +28,7 @@ export const BLACK_DIRECTION = -1;
  */
 export class Board {
   grid = [];
+  lastPieceMoved = new Empty(-1, -1);
 
   /**
    * Builds the starting layout of a new game of chess.
@@ -46,14 +47,14 @@ export class Board {
 
     // white second row
     this.grid[1] = [];
-    this.grid[1][0] = new Pawn(WHITE, 1, 0);
-    this.grid[1][1] = new Pawn(WHITE, 1, 1);
-    this.grid[1][2] = new Pawn(WHITE, 1, 2);
-    this.grid[1][3] = new Pawn(WHITE, 1, 3);
-    this.grid[1][4] = new Pawn(WHITE, 1, 4);
-    this.grid[1][5] = new Pawn(WHITE, 1, 5);
-    this.grid[1][6] = new Pawn(WHITE, 1, 6);
-    this.grid[1][7] = new Pawn(WHITE, 1, 7);
+    this.grid[1][0] = new Pawn(this, WHITE, 1, 0);
+    this.grid[1][1] = new Pawn(this, WHITE, 1, 1);
+    this.grid[1][2] = new Pawn(this, WHITE, 1, 2);
+    this.grid[1][3] = new Pawn(this, WHITE, 1, 3);
+    this.grid[1][4] = new Pawn(this, WHITE, 1, 4);
+    this.grid[1][5] = new Pawn(this, WHITE, 1, 5);
+    this.grid[1][6] = new Pawn(this, WHITE, 1, 6);
+    this.grid[1][7] = new Pawn(this, WHITE, 1, 7);
 
     // empty middle rows
     for (let row = 2; row < NUM_ROWS - 2; row++) {
@@ -65,14 +66,14 @@ export class Board {
 
     // black second row
     this.grid[6] = [];
-    this.grid[6][0] = new Pawn(BLACK, 6, 0);
-    this.grid[6][1] = new Pawn(BLACK, 6, 1);
-    this.grid[6][2] = new Pawn(BLACK, 6, 2);
-    this.grid[6][3] = new Pawn(BLACK, 6, 3);
-    this.grid[6][4] = new Pawn(BLACK, 6, 4);
-    this.grid[6][5] = new Pawn(BLACK, 6, 5);
-    this.grid[6][6] = new Pawn(BLACK, 6, 6);
-    this.grid[6][7] = new Pawn(BLACK, 6, 7);
+    this.grid[6][0] = new Pawn(this, BLACK, 6, 0);
+    this.grid[6][1] = new Pawn(this, BLACK, 6, 1);
+    this.grid[6][2] = new Pawn(this, BLACK, 6, 2);
+    this.grid[6][3] = new Pawn(this, BLACK, 6, 3);
+    this.grid[6][4] = new Pawn(this, BLACK, 6, 4);
+    this.grid[6][5] = new Pawn(this, BLACK, 6, 5);
+    this.grid[6][6] = new Pawn(this, BLACK, 6, 6);
+    this.grid[6][7] = new Pawn(this, BLACK, 6, 7);
 
     // black first row
     this.grid[7] = [];
@@ -139,6 +140,8 @@ export class Board {
     // does pieces specific actions for each piece before making the move
     piece.move(this.grid, originId, destId);
 
+    piece = this.grid[startCoordinates.row][startCoordinates.col];
+
     // Set the piece at the destination position to be the same as the piece at the origin position
     this.grid[endCoordinates.row][endCoordinates.col] = piece;
 
@@ -152,6 +155,10 @@ export class Board {
     piece.row = endCoordinates.row;
     piece.col = endCoordinates.col;
     piece.hasMoved = true;
+
+    // set enPassant to false on the last piece moved
+    this.lastPieceMoved.enPassant = false;
+    this.lastPieceMoved = piece;
 
     // Print the updated grid
     this.print();

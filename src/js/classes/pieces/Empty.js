@@ -33,5 +33,7 @@ export class Empty extends Piece {
    * @param {string} destId - The ID of the destination position.
    * @returns {void}
    */
-  move(grid, originId, destId) {}
+  move(grid, originId, destId) {
+    this.enPassant = false;
+  }
 }

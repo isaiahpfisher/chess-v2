@@ -1,6 +1,21 @@
-import { BLACK_DIRECTION, PAWN, WHITE, WHITE_DIRECTION } from "../Board.js";
+import {
+  BISHOP,
+  BLACK_DIRECTION,
+  EMPTY,
+  KNIGHT,
+  PAWN,
+  QUEEN,
+  ROOK,
+  WHITE,
+  WHITE_DIRECTION,
+} from "../Board.js";
+import { Game } from "../Game.js";
 import { Piece } from "../Piece.js";
+import { Bishop } from "./Bishop.js";
 import { Empty } from "./Empty.js";
+import { Knight } from "./Knight.js";
+import { Queen } from "./Queen.js";
+import { Rook } from "./Rook.js";
 
 /**
  * Represents a pawn on a chessboard.
@@ -12,14 +27,13 @@ export class Pawn extends Piece {
    * @param {number} row - The row of the Pawn on the Board (0 - 7).
    * @param {number} col - The column of the Pawn on the Board (0 - 7).
    */
-  constructor(color, row, col) {
+
+  constructor(board, color, row, col) {
     super(PAWN, color, row, col);
     this.imgSrc = `./assets/${color}-pawn.svg`; // Set the image source for the Pawn based on its color
     this.enPassant = false;
-
-    document
-      .getElementById("promote-pawn")
-      .addEventListener("click", this.promotePawn.bind(this));
+    this.promotionSelection = QUEEN;
+    this.board = board;
   }
 
   /**
@@ -94,7 +108,10 @@ export class Pawn extends Piece {
 
     // if en passant happened, remove the enemy piece
     if (grid[endCoordinates.row - direction][endCoordinates.col].enPassant) {
-      grid[endCoordinates.row - direction][endCoordinates.col] = new Empty();
+      grid[endCoordinates.row - direction][endCoordinates.col] = new Empty(
+        endCoordinates.row - direction,
+        endCoordinates.col
+      );
     }
 
     // if pawn moved two spaces (which is only possible on first turn), make it vulnerable to en passant attack
@@ -104,20 +121,50 @@ export class Pawn extends Piece {
 
     // handle pawn promotion
     if (endCoordinates.row == (this.color == WHITE ? 7 : 0)) {
-      this.showPawnPromotion();
+      if (Game.computerMode) {
+        this.promotionSelection = QUEEN;
+        this.promotePawn(grid);
+      } else {
+        this.showPawnPromotion(grid);
+      }
     }
   }
 
   promotePawn(grid) {
+    if (!Game.computerMode) {
+      this.promotionSelection = document.querySelector(
+        'input[name="promotion-selection"]:checked'
+      ).value;
+    }
+
+    // problem is because execution is returning to Board.move() before users makes their choice
+    switch (this.promotionSelection) {
+      case QUEEN:
+        grid[this.row][this.col] = new Queen(this.color, this.row, this.col);
+        break;
+      case ROOK:
+        grid[this.row][this.col] = new Rook(this.color, this.row, this.col);
+        break;
+      case BISHOP:
+        grid[this.row][this.col] = new Bishop(this.color, this.row, this.col);
+        break;
+      case KNIGHT:
+        grid[this.row][this.col] = new Knight(this.color, this.row, this.col);
+        break;
+      default:
+        grid[this.row][this.col] = new Queen(this.color, this.row, this.col);
+    }
+
+    this.board.print();
     this.hidePawnPromotion();
-    return true;
   }
 
   /**
    * Displays the pawn promotion modal.
+   * @param {Array} grid - The grid of Pieces from Board.js.
    * @returns {void}
    */
-  showPawnPromotion() {
+  showPawnPromotion(grid) {
     let container = document.getElementById("pawn-promotion-container");
     let backdrop = document.getElementById("pawn-promotion-backdrop");
     let modal = document.getElementById("pawn-promotion-modal");
@@ -157,6 +204,10 @@ export class Pawn extends Piece {
       .finished.then(() => {
         // Animation finished callback
       });
+
+    document
+      .getElementById("promote-pawn")
+      .addEventListener("click", () => this.promotePawn.bind(this)(grid));
   }
 
   /**

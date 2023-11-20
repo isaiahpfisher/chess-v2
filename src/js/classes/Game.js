@@ -4,12 +4,13 @@ import { Board } from "./Board.js";
  * Represents a game of chess.
  */
 export class Game {
+  static computerMode = true;
+
   /**
    * Constructs new instance of Game.
    */
   constructor() {
     this.board = new Board();
-    this.computerMode = true;
     this.setupEventListeners();
   }
 
@@ -43,12 +44,19 @@ export class Game {
   }
 
   /**
+   * Toggle computer mode.
+   */
+  static toggleComputerMode() {
+    Game.computerMode = !Game.computerMode;
+  }
+
+  /**
    * Toggles the game mode between computer and friend mode.
    *
    * @param {Event} e - The event object triggered by the mode change.
    */
   changeGameMode(e) {
-    this.computerMode = !this.computerMode;
+    Game.toggleComputerMode();
 
     // Toggle background colors
     document.getElementById("mode-toggle").classList.toggle("bg-indigo-600");
