@@ -21,6 +21,8 @@ export class Game {
    */
   print() {
     this.board.print();
+    document.getElementById("to-move").textContent =
+      this.turn[0].toUpperCase() + this.turn.substring(1);
   }
 
   /**
@@ -127,11 +129,12 @@ export class Game {
     let originId = e.dataTransfer.getData("text");
     let destId = e.target.closest(".cell").id;
 
-    if (this.board.isValidMove(turn, originId, destId)) {
+    if (this.board.isValidMove(this.turn, originId, destId)) {
       // make the move
       this.board.move(originId, destId);
       this.turnCount++;
       this.turn = this.turn == WHITE ? BLACK : WHITE;
+      this.print();
     }
   };
 }

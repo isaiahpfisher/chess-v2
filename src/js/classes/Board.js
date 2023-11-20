@@ -118,28 +118,13 @@ export class Board {
     let startPiece = this.grid[startCoordinates.row][startCoordinates.col];
     let endPiece = this.grid[endCoordinates.row][endCoordinates.col];
 
-    // Checks if the move is on the board
-    if (
-      input != "-1" &&
-      (startCol < 0 ||
-        startCol > 7 ||
-        startRow < 0 ||
-        startRow > 7 ||
-        endCol < 0 ||
-        endCol > 7 ||
-        endRow < 0 ||
-        endRow > 7)
-    ) {
-      validMove = false;
-    }
-
     // Check if startPiece is invalid
-    else if (startPiece.isEmpty()) {
+    if (startPiece.isEmpty()) {
       validMove = false;
     }
 
     // Check if startPiece is from the right team
-    else if (currentTurn != startPiece.color) {
+    else if (turn != startPiece.color) {
       validMove = false;
     }
 
@@ -148,9 +133,7 @@ export class Board {
       validMove = false;
     }
     // checking if piece is in the way
-    else if (
-      startPiece.isPieceInWay(grid, startRow, startCol, endRow, endCol)
-    ) {
+    else if (startPiece.isPieceInWay(this.grid, originId, destId)) {
       validMove = false;
     }
 
@@ -197,8 +180,5 @@ export class Board {
     // set enPassant to false on the last piece moved
     this.lastPieceMoved.enPassant = false;
     this.lastPieceMoved = piece;
-
-    // Print the updated grid
-    this.print();
   }
 }

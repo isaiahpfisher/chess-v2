@@ -1,4 +1,4 @@
-import { EMPTY } from "./Board.js";
+import { EMPTY, KNIGHT, NUM_COLS, NUM_ROWS } from "./Board.js";
 
 /**
  * Represents a piece on a chessboard.
@@ -22,6 +22,82 @@ export class Piece {
 
   isEmpty() {
     return this.type == EMPTY;
+  }
+
+  isPieceInWay(grid, originId, destId) {
+    let pieceInWay = false;
+
+    let startCoordinates = Piece.getCoordinates(originId);
+    let endCoordinates = Piece.getCoordinates(destId);
+
+    let maxRow =
+      startCoordinates.row > endCoordinates.row
+        ? startCoordinates.row
+        : endCoordinates.row;
+    let minRow =
+      startCoordinates.row < endCoordinates.row
+        ? startCoordinates.row
+        : endCoordinates.row;
+    let maxCol =
+      startCoordinates.col > endCoordinates.col
+        ? startCoordinates.col
+        : endCoordinates.col;
+    let minCol =
+      startCoordinates.col < endCoordinates.col
+        ? startCoordinates.col
+        : endCoordinates.col;
+
+    // moving front to back
+    if (minRow != maxRow && minCol == maxCol) {
+      for (let row = 0; row < NUM_ROWS; row++) {
+        for (let col = 0; col < NUM_COLS; col++) {
+          if (col == minCol && row > minRow && row < maxRow) {
+            if (!grid[row][col].isEmpty()) {
+              pieceInWay = true;
+            }
+          }
+        }
+      }
+    }
+
+    // side to side
+    else if (minRow == maxRow && minCol != maxCol) {
+      for (let row = 0; row < NUM_ROWS; row++) {
+        for (let col = 0; col < NUM_COLS; col++) {
+          if (row == minRow && col > minCol && col < maxCol) {
+            if (!grid[row][col].isEmpty()) {
+              pieceInWay = true;
+            }
+          }
+        }
+      }
+    }
+
+    // diagonal moves
+    else {
+      for (let row = 0; row < NUM_ROWS; row++) {
+        for (let col = 0; col < NUM_COLS; col++) {
+          if (
+            row > minRow &&
+            row < maxRow &&
+            col > minCol &&
+            col < maxCol &&
+            Math.abs(row - startCoordinates.row) ==
+              Math.abs(col - startCoordinates.col)
+          ) {
+            if (!grid[row][col].isEmpty()) {
+              pieceInWay = true;
+            }
+          }
+        }
+      }
+    }
+
+    if (this.type == KNIGHT) {
+      pieceInWay = false;
+    }
+
+    return pieceInWay;
   }
 
   /**
