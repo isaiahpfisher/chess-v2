@@ -5,6 +5,8 @@ import { BLACK, Board, WHITE } from "./Board.js";
  */
 export class Game {
   static computerMode = true;
+  static lastCapture = 0;
+  undoManager = [];
 
   /**
    * Constructs new instance of Game.
@@ -14,6 +16,7 @@ export class Game {
     this.setupEventListeners();
     this.turnCount = 0;
     this.turn = WHITE;
+    Game.lastCapture = 0;
   }
 
   /**
@@ -23,6 +26,9 @@ export class Game {
     this.board.print();
     document.getElementById("to-move").textContent =
       this.turn[0].toUpperCase() + this.turn.substring(1);
+    document.getElementById("turn-count").textContent = this.turnCount;
+    document.getElementById("turns-since-capture").textContent =
+      Game.lastCapture;
   }
 
   /**
@@ -44,7 +50,7 @@ export class Game {
     // for game mode
     document
       .querySelector("#mode-toggle")
-      .addEventListener("click", this.changeGameMode);
+      .addEventListener("click", this.changeGameMode.bind(this));
   }
 
   /**
@@ -75,13 +81,14 @@ export class Game {
       .classList.toggle("translate-x-0");
 
     // Update mode description based on the current game mode
-    if (this.computerMode) {
+    if (Game.computerMode) {
       document.getElementById("mode-description").textContent =
         "Disable to play with a friend.";
     } else {
       document.getElementById("mode-description").textContent =
         "Enable to play against a computer opponent.";
     }
+    this.undo();
   }
 
   /**
@@ -130,11 +137,20 @@ export class Game {
     let destId = e.target.closest(".cell").id;
 
     if (this.board.isValidMove(this.turn, originId, destId)) {
-      // make the move
-      this.board.move(originId, destId);
+      // make the move and save the undo function
+      let undoFunction = this.board.move(originId, destId);
+      this.undoManager.push(undoFunction);
       this.turnCount++;
       this.turn = this.turn == WHITE ? BLACK : WHITE;
       this.print();
     }
   };
+
+  undo() {
+    let undoFunction = this.undoManager.pop();
+    undoFunction();
+    this.turnCount--;
+    this.turn = this.turn == WHITE ? BLACK : WHITE;
+    this.print();
+  }
 }

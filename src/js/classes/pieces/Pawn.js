@@ -100,6 +100,8 @@ export class Pawn extends Piece {
    * @returns {void}
    */
   move(grid, originId, destId) {
+    let undoFunction = undefined;
+
     let direction = this.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
 
     let startCoordinates = Piece.getCoordinates(originId);
@@ -109,10 +111,15 @@ export class Pawn extends Piece {
 
     // if en passant happened, remove the enemy piece
     if (grid[endCoordinates.row - direction][endCoordinates.col].enPassant) {
+      let enemyPiece = grid[endCoordinates.row - direction][endCoordinates.col];
       grid[endCoordinates.row - direction][endCoordinates.col] = new Empty(
         endCoordinates.row - direction,
         endCoordinates.col
       );
+      undoFunction = () => {
+        grid[endCoordinates.row - direction][endCoordinates.col] = enemyPiece;
+        enemyPiece.enPassant = true;
+      };
     }
 
     // if pawn moved two spaces (which is only possible on first turn), make it vulnerable to en passant attack
@@ -129,6 +136,8 @@ export class Pawn extends Piece {
         this.showPawnPromotion(grid);
       }
     }
+
+    return undoFunction;
   }
 
   /**

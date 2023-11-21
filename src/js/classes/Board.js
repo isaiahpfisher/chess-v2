@@ -1,3 +1,4 @@
+import { Game } from "./Game.js";
 import { Piece } from "./Piece.js";
 import { Bishop } from "./pieces/Bishop.js";
 import { Empty } from "./pieces/Empty.js";
@@ -149,17 +150,53 @@ export class Board {
    * Moves a piece from its current position (originId) to a specified position (destId) on the grid.
    * @param {string} originId - The ID of the piece's current position.
    * @param {string} destId - The ID of the destination position.
-   * @returns {void}
+   * @returns {function} - Returns an undo function to undo the move.
    */
   move(originId, destId) {
     // Get the start and end coordinates (row and column)
     let startCoordinates = Piece.getCoordinates(originId);
     let endCoordinates = Piece.getCoordinates(destId);
 
+    let direction = this.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
+
     let piece = this.grid[startCoordinates.row][startCoordinates.col];
+    let endPiece = this.grid[endCoordinates.row][endCoordinates.col];
+    let initialPieceHasMoved = piece.hasMoved;
+    let initialEnPassant = piece.enPassant;
+    let initialLastCapture = Game.lastCapture;
 
     // does pieces specific actions for each piece before making the move
-    piece.move(this.grid, originId, destId);
+    let undoPieceMove = piece.move(this.grid, originId, destId);
+
+    // reset or increment turns since last capture
+    if (
+      !this.grid[endCoordinates.row][endCoordinates.col].isEmpty() ||
+      (endCoordinates.row - direction >= 0 &&
+        endCoordinates.row - direction <= 7 &&
+        this.grid[endCoordinates.row - direction][endCoordinates.col].enPassant)
+    ) {
+      Game.lastCapture = 0;
+    } else {
+      Game.lastCapture++;
+    }
+
+    let undoFunction = () => {
+      piece.row = startCoordinates.row;
+      piece.col = startCoordinates.col;
+      piece.hasMoved = initialPieceHasMoved;
+      piece.enPassant = initialEnPassant;
+      Game.lastCapture = initialLastCapture;
+
+      this.lastPieceMoved = this.lastPieceMoved;
+      this.lastPieceMoved.enPassant = this.lastPieceMoved.enPassant;
+
+      this.grid[startCoordinates.row][startCoordinates.col] = piece;
+      this.grid[endCoordinates.row][endCoordinates.col] = endPiece;
+
+      if (undoPieceMove) {
+        undoPieceMove();
+      }
+    };
 
     piece = this.grid[startCoordinates.row][startCoordinates.col];
 
@@ -180,5 +217,7 @@ export class Board {
     // set enPassant to false on the last piece moved
     this.lastPieceMoved.enPassant = false;
     this.lastPieceMoved = piece;
+
+    return undoFunction;
   }
 }

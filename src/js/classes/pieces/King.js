@@ -1,4 +1,4 @@
-import { BLACK, KING } from "../Board.js";
+import { BLACK, KING, ROOK } from "../Board.js";
 import { Piece } from "../Piece.js";
 import { Empty } from "./Empty.js";
 
@@ -101,6 +101,17 @@ export class King extends Piece {
       // move the rook
       grid[rookRowDest][rookColDest] = grid[rookRow][rookCol];
       grid[rookRow][rookCol] = new Empty(rookRow, rookCol);
+      grid[rookRowDest][rookColDest].row = rookRowDest;
+      grid[rookRowDest][rookColDest].col = rookColDest;
+      grid[rookRowDest][rookColDest].hasMoved = true;
+
+      return () => {
+        grid[rookRow][rookCol] = grid[rookRowDest][rookColDest];
+        grid[rookRowDest][rookColDest] = new Empty(rookRowDest, rookColDest);
+        grid[rookRow][rookCol].row = rookRow;
+        grid[rookRow][rookCol].col = rookCol;
+        grid[rookRow][rookCol].hasMoved = false;
+      };
     }
   }
 }
