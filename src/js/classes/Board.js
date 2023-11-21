@@ -162,7 +162,7 @@ export class Board {
    * @param {string} destId - The ID of the destination position.
    * @returns {function} - Returns an undo function to undo the move.
    */
-  move(originId, destId, capturedPieces) {
+  move(originId, destId, capturedPieces, moveHistory) {
     // Get the start and end coordinates (row and column)
     let startCoordinates = Piece.getCoordinates(originId);
     let endCoordinates = Piece.getCoordinates(destId);
@@ -170,7 +170,15 @@ export class Board {
     let piece = this.grid[startCoordinates.row][startCoordinates.col];
     let endPiece = this.grid[endCoordinates.row][endCoordinates.col];
 
+    let moveSummary = {
+      startPiece: piece,
+      capturedPiece: endPiece,
+      originId: originId,
+      destId: destId,
+    };
+
     let direction = piece.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
+    let colDiff = Math.abs(startCoordinates.col - endCoordinates.col);
 
     let initialPieceHasMoved = piece.hasMoved;
     let initialEnPassant = piece.enPassant;
@@ -183,16 +191,25 @@ export class Board {
       Game.lastCapture = 0;
       capturedPieces.push(endPiece.imgSrc);
     } else if (
+      piece.type == PAWN &&
       endCoordinates.row - direction >= 0 &&
       endCoordinates.row - direction <= 7 &&
       this.grid[endCoordinates.row - direction][endCoordinates.col].enPassant
     ) {
       Game.lastCapture = 0;
+      moveSummary.specialMove = "En Passant";
+      moveSummary.capturedPiece =
+        this.grid[endCoordinates.row - direction][endCoordinates.col];
       capturedPieces.push(
         this.grid[endCoordinates.row - direction][endCoordinates.col].imgSrc
       );
     } else {
       Game.lastCapture++;
+    }
+
+    // check for castling for moveSummary
+    if (piece.type == KING && colDiff > 1) {
+      moveSummary.specialMove = "Castled";
     }
 
     // does pieces specific actions for each piece before making the move
@@ -237,6 +254,11 @@ export class Board {
     // update lastPieceMoved
     this.lastPieceMoved.enPassant = false;
     this.lastPieceMoved = piece;
+
+    // if called from Game.js, push the moveSummary to the moveHistory
+    if (moveHistory) {
+      moveHistory.unshift(moveSummary);
+    }
 
     return undoFunction;
   }

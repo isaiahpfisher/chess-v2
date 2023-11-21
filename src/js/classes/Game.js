@@ -1,4 +1,4 @@
-import { BLACK, Board, WHITE } from "./Board.js";
+import { BLACK, Board, EMPTY, WHITE } from "./Board.js";
 
 /**
  * Represents a game of chess.
@@ -8,6 +8,7 @@ export class Game {
   static lastCapture = 0;
   undoManager = [];
   capturedPieces = [];
+  moveHistory = [];
 
   /**
    * Constructs new instance of Game.
@@ -60,6 +61,37 @@ export class Game {
         '<img draggable="false" src="./assets/black-pawn.svg">';
       blackContainer.querySelector("img").classList.add("invisible");
     }
+
+    // move history
+    let moveContainer = document.getElementById("move-history");
+    moveContainer.innerHTML = "";
+    this.moveHistory.forEach((move, turn) => {
+      // Get template element
+      let template = document.querySelector("#move-history-template");
+      // Clone template content
+      let item = template.content.cloneNode(true);
+
+      item.querySelector(".turn-number").innerText =
+        this.moveHistory.length - turn;
+
+      item.querySelector(".start-piece img").src = move.startPiece.imgSrc;
+      item.querySelector(
+        ".coordinates"
+      ).innerText = `${move.originId} to ${move.destId}`;
+
+      if (move.capturedPiece.type != EMPTY) {
+        item.querySelector(".captured-piece img").src =
+          move.capturedPiece.imgSrc;
+        item.querySelector(".captured-piece").classList.remove("hidden");
+      }
+
+      if (move.specialMove) {
+        item.querySelector(".special-move").innerText = `(${move.specialMove})`;
+        item.querySelector(".special-move").classList.remove("hidden");
+      }
+
+      moveContainer.appendChild(item);
+    });
   }
 
   /**
@@ -168,7 +200,12 @@ export class Game {
 
     if (this.board.isValidMove(this.turn, originId, destId)) {
       // make the move and save the undo function
-      let undoFunction = this.board.move(originId, destId, this.capturedPieces);
+      let undoFunction = this.board.move(
+        originId,
+        destId,
+        this.capturedPieces,
+        this.moveHistory
+      );
       this.undoManager.push(undoFunction);
       this.turnCount++;
       this.turn = this.turn == WHITE ? BLACK : WHITE;

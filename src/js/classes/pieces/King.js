@@ -123,13 +123,24 @@ export class King extends Piece {
     }
   }
 
+  /**
+   * Checks if the current king is in check.
+   * @param {Array<Array<Piece>>} grid - The game grid representing the chessboard.
+   * @returns {boolean} - Returns true if the king is in check, false otherwise.
+   */
   isInCheck(grid) {
+    // Initialize isInCheck flag as false
     let isInCheck = false;
 
+    // Iterate over each row and column of the grid
     for (let row = 0; row < NUM_ROWS; row++) {
       for (let col = 0; col < NUM_COLS; col++) {
+        // Get the current piece at the current position
         let piece = grid[row][col];
+
+        // Check if the piece is not empty and its color is different from the current king's color
         if (!piece.isEmpty() && piece.color != this.color) {
+          // Check if the piece can move to the king's position and if there is no piece blocking its way
           let validMove = piece.isValidMove(
             grid,
             Piece.getA1Notation(row, col),
@@ -140,6 +151,8 @@ export class King extends Piece {
             Piece.getA1Notation(row, col),
             Piece.getA1Notation(this.row, this.col)
           );
+
+          // If the piece has a valid move and there is no piece blocking its way, set isInCheck to true
           if (validMove && !pieceInWay) {
             isInCheck = true;
           }
@@ -147,6 +160,7 @@ export class King extends Piece {
       }
     }
 
+    // Return the isInCheck flag indicating whether the king is in check or not
     return isInCheck;
   }
 }

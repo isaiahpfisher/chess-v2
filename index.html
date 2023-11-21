@@ -14,6 +14,8 @@
 
 <body>
   <div class="container max-w-full bg-gray-100">
+
+    <!-- THE BOARD -->
     <div class="left-column">
 
       <div class="chessboard">
@@ -260,10 +262,13 @@
       </div>
 
     </div>
+
     <div class="right-column">
       <div class="game-info flex flex-col">
         <div class="info">
           <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+
+            <!-- QUICK STATS -->
             <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
               <dt class="truncate text-sm font-medium text-gray-500">To Move</dt>
               <dd id="to-move" class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"></dd>
@@ -278,6 +283,8 @@
             </div>
           </dl>
         </div>
+
+        <!-- COMPUTER OPPONENT CONTROLS -->
         <div class="mode mt-5 overflow-hidden rounded-lg bg-white shadow">
           <div class="px-4 py-5 sm:p-6">
             <div class="flex items-center justify-between">
@@ -299,6 +306,8 @@
 
           </div>
         </div>
+
+        <!-- CAPTURED PIECES -->
         <div class="captured-pieces mt-5 overflow-hidden rounded-md bg-white shadow">
           <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
             <h3 class="text-base font-semibold leading-6 text-gray-900">Captured Pieces</h3>
@@ -308,32 +317,21 @@
             <li class="px-3 py-2 flex" id="white-captured-pieces"></li>
           </ul>
         </div>
+
+        <!-- MOVE HISTORY -->
         <div class="move-history mt-5 overflow-hidden rounded-md bg-white shadow">
           <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
             <h3 class="text-base font-semibold leading-6 text-gray-900">Move History</h3>
           </div>
-          <ul role="list" class="divide-y divide-gray-200 overflow-auto max-h-[195px] overflow-scroll">
-            <li class="px-6 py-3">
-              E1 to G1 (Castling)
-            </li>
-            <li class="px-6 py-3">
-              E1 to G1 (Castling)
-            </li>
-            <li class="px-6 py-3">
-              E1 to G1 (Castling)
-            </li>
-            <li class="px-6 py-3">
-              E1 to G1 (Castling)
-            </li>
-            <li class="px-6 py-3">
-              E1 to G1 (Castling)
-            </li>
+          <ul id="move-history" role="list"
+            class="divide-y divide-gray-200 overflow-auto max-h-[195px] overflow-scroll">
           </ul>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- PAWN PROMOTION -->
   <div class="relative z-10 hidden" id="pawn-promotion-container" aria-labelledby="modal-title" role="dialog"
     aria-modal="true">
     <div id="pawn-promotion-backdrop" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
@@ -392,6 +390,33 @@
       </div>
     </div>
   </div>
+
+  <!-- MOVE HISTORY TEMPLATE -->
+  <template id="move-history-template">
+    <li class="px-3 py-2 flex items-center">
+      <!-- turn number -->
+      <span class="turn-number mr-2"></span>
+
+      <!-- start piece -->
+      <span
+        class="start-piece mr-1 inline-flex items-center rounded-md bg-gray-100 px-px py-px text-xs font-medium text-gray-600">
+        <img class="h-6" draggable="false" src="">
+      </span>
+      <!-- coordinates -->
+      <span
+        class="coordinates inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"></span>
+      <!-- captured piece (hidden by default) -->
+      <span
+        class="captured-piece ml-1 hidden inline-flex items-center rounded-md bg-gray-100 px-px py-px text-xs font-medium text-gray-600">
+        <img class="h-6" draggable="false" src="">
+      </span>
+      <!-- special move note (hidden by default) -->
+      <span
+        class="special-move ml-1 hidden inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10"></span>
+
+
+    </li>
+  </template>
 
 </body>
 
