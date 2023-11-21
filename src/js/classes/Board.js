@@ -145,8 +145,8 @@ export class Board {
 
     // in check?
     if (validMove) {
-      // simulate the move
-      let undoFunction = this.move(originId, destId);
+      // simulate the move - empty array for capturedPieces because just a simulation
+      let undoFunction = this.move(originId, destId, []);
       if (this.findKing(turn).isInCheck(this.grid)) {
         validMove = false;
       }
@@ -162,7 +162,7 @@ export class Board {
    * @param {string} destId - The ID of the destination position.
    * @returns {function} - Returns an undo function to undo the move.
    */
-  move(originId, destId) {
+  move(originId, destId, capturedPieces) {
     // Get the start and end coordinates (row and column)
     let startCoordinates = Piece.getCoordinates(originId);
     let endCoordinates = Piece.getCoordinates(destId);
@@ -178,14 +178,19 @@ export class Board {
     // does pieces specific actions for each piece before making the move
     let undoPieceMove = piece.move(this.grid, originId, destId);
 
-    // reset or increment turns since last capture
-    if (
-      !this.grid[endCoordinates.row][endCoordinates.col].isEmpty() ||
-      (endCoordinates.row - direction >= 0 &&
-        endCoordinates.row - direction <= 7 &&
-        this.grid[endCoordinates.row - direction][endCoordinates.col].enPassant)
+    // reset or increment turns since last capture and push captured pieces to capturedPieces array
+    if (!this.grid[endCoordinates.row][endCoordinates.col].isEmpty()) {
+      Game.lastCapture = 0;
+      capturedPieces.push(endPiece.imgSrc);
+    } else if (
+      endCoordinates.row - direction >= 0 &&
+      endCoordinates.row - direction <= 7 &&
+      this.grid[endCoordinates.row - direction][endCoordinates.col].enPassant
     ) {
       Game.lastCapture = 0;
+      capturedPieces.push(
+        this.grid[endCoordinates.row - direction][endCoordinates.col].imgSrc
+      );
     } else {
       Game.lastCapture++;
     }

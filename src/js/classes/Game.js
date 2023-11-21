@@ -7,6 +7,7 @@ export class Game {
   static computerMode = true;
   static lastCapture = 0;
   undoManager = [];
+  capturedPieces = [];
 
   /**
    * Constructs new instance of Game.
@@ -24,11 +25,40 @@ export class Game {
    */
   print() {
     this.board.print();
+
+    // basis stats
     document.getElementById("to-move").textContent =
       this.turn[0].toUpperCase() + this.turn.substring(1);
     document.getElementById("turn-count").textContent = this.turnCount;
     document.getElementById("turns-since-capture").textContent =
       Game.lastCapture;
+
+    // captured pieces
+    let whiteContainer = document.getElementById("white-captured-pieces");
+    let blackContainer = document.getElementById("black-captured-pieces");
+
+    let whitePieces = this.capturedPieces.filter((f) => f.includes("white"));
+    let blackPieces = this.capturedPieces.filter((f) => f.includes("black"));
+
+    if (whitePieces.length > 0) {
+      whiteContainer.classList.remove("hidden");
+      whiteContainer.innerHTML = "";
+      whitePieces.forEach((f) => {
+        whiteContainer.innerHTML += `<img src="${f}">`;
+      });
+    } else {
+      whiteContainer.classList.add("hidden");
+    }
+
+    if (blackPieces.length > 0) {
+      blackContainer.classList.remove("hidden");
+      blackContainer.innerHTML = "";
+      blackPieces.forEach((f) => {
+        blackContainer.innerHTML += `<img src="${f}">`;
+      });
+    } else {
+      blackContainer.classList.add("hidden");
+    }
   }
 
   /**
@@ -137,7 +167,7 @@ export class Game {
 
     if (this.board.isValidMove(this.turn, originId, destId)) {
       // make the move and save the undo function
-      let undoFunction = this.board.move(originId, destId);
+      let undoFunction = this.board.move(originId, destId, this.capturedPieces);
       this.undoManager.push(undoFunction);
       this.turnCount++;
       this.turn = this.turn == WHITE ? BLACK : WHITE;

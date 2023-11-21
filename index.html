@@ -284,8 +284,7 @@
               <span class="flex flex-grow flex-col">
                 <span class="text-sm font-medium leading-6 text-gray-900" id="mode-label">Computer
                   Opponent</span>
-                <span class="text-sm text-gray-500" id="mode-description">Enable to play against a computer
-                  opponent.</span>
+                <span class="text-sm text-gray-500" id="mode-description">Disable to play with a friend.</span>
               </span>
               <!-- Enabled: "bg-indigo-600", Not Enabled: "bg-gray-200" -->
               <button type="button" id="mode-toggle"
@@ -305,12 +304,8 @@
             <h3 class="text-base font-semibold leading-6 text-gray-900">Captured Pieces</h3>
           </div>
           <ul role="list" class="divide-y divide-gray-200">
-            <li class="px-6 py-4">
-              Black Pieces
-            </li>
-            <li class="px-6 py-4">
-              White Pieces
-            </li>
+            <li class="px-3 py-2 flex h-12" id="black-captured-pieces"></li>
+            <li class="px-3 py-2 min-h-[61px] flex" id="white-captured-pieces"></li>
           </ul>
         </div>
         <div class="move-history mt-5 overflow-hidden rounded-md bg-white shadow">
