@@ -1,4 +1,4 @@
-import { BLACK, KING, ROOK } from "../Board.js";
+import { BLACK, KING, NUM_COLS, NUM_ROWS, ROOK } from "../Board.js";
 import { Piece } from "../Piece.js";
 import { Empty } from "./Empty.js";
 
@@ -121,5 +121,32 @@ export class King extends Piece {
         grid[rookRow][rookCol].hasMoved = false;
       };
     }
+  }
+
+  isInCheck(grid) {
+    let isInCheck = false;
+
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        let piece = grid[row][col];
+        if (!piece.isEmpty() && piece.color != this.color) {
+          let validMove = piece.isValidMove(
+            grid,
+            Piece.getA1Notation(row, col),
+            Piece.getA1Notation(this.row, this.col)
+          );
+          let pieceInWay = piece.isPieceInWay(
+            grid,
+            Piece.getA1Notation(row, col),
+            Piece.getA1Notation(this.row, this.col)
+          );
+          if (validMove && !pieceInWay) {
+            isInCheck = true;
+          }
+        }
+      }
+    }
+
+    return isInCheck;
   }
 }

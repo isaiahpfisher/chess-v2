@@ -139,8 +139,18 @@ export class Board {
     }
 
     // piece-specific checks
-    if (!startPiece.isValidMove(this.grid, originId, destId)) {
+    else if (!startPiece.isValidMove(this.grid, originId, destId)) {
       validMove = false;
+    }
+
+    // in check?
+    if (validMove) {
+      // simulate the move
+      let undoFunction = this.move(originId, destId);
+      if (this.findKing(turn).isInCheck(this.grid)) {
+        validMove = false;
+      }
+      undoFunction();
     }
 
     return validMove;
@@ -220,5 +230,16 @@ export class Board {
     this.lastPieceMoved = piece;
 
     return undoFunction;
+  }
+
+  findKing(color) {
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        let piece = this.grid[row][col];
+        if (piece.type == KING && piece.color == color) {
+          return piece;
+        }
+      }
+    }
   }
 }
