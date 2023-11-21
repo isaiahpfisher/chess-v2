@@ -79,6 +79,14 @@ export class King extends Piece {
     return validMove;
   }
 
+  /**
+   * Moves a piece on the chess grid from the origin cell to the destination cell.
+   * If the move involves castling, it also moves the corresponding rook.
+   * @param {Piece[][]} grid - The chess grid.
+   * @param {string} originId - The ID of the origin cell.
+   * @param {string} destId - The ID of the destination cell.
+   * @returns {Function} - A function that can be used to undo the move.
+   */
   move(grid, originId, destId) {
     let startCoordinates = Piece.getCoordinates(originId);
     let endCoordinates = Piece.getCoordinates(destId);

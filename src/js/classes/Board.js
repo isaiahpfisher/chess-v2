@@ -180,6 +180,7 @@ export class Board {
       Game.lastCapture++;
     }
 
+    // define function to undo move
     let undoFunction = () => {
       piece.row = startCoordinates.row;
       piece.col = startCoordinates.col;

@@ -88,7 +88,6 @@ export class Game {
       document.getElementById("mode-description").textContent =
         "Enable to play against a computer opponent.";
     }
-    this.undo();
   }
 
   /**
@@ -146,6 +145,13 @@ export class Game {
     }
   };
 
+  /**
+   * Undoes the last move made in the game.
+   * It calls the undo function stored in the undo manager,
+   * decrements the turn count, updates the current turn color,
+   * and prints the current state of the game.
+   * @returns {void}
+   */
   undo() {
     let undoFunction = this.undoManager.pop();
     undoFunction();
