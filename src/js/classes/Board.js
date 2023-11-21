@@ -167,16 +167,16 @@ export class Board {
     let startCoordinates = Piece.getCoordinates(originId);
     let endCoordinates = Piece.getCoordinates(destId);
 
-    let direction = this.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
-
     let piece = this.grid[startCoordinates.row][startCoordinates.col];
     let endPiece = this.grid[endCoordinates.row][endCoordinates.col];
+
+    let direction = piece.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
+
     let initialPieceHasMoved = piece.hasMoved;
     let initialEnPassant = piece.enPassant;
     let initialLastCapture = Game.lastCapture;
-
-    // does pieces specific actions for each piece before making the move
-    let undoPieceMove = piece.move(this.grid, originId, destId);
+    let initialLastPieceMoved = this.lastPieceMoved;
+    let initialLastPieceMovedEnPassant = this.lastPieceMoved.enPassant;
 
     // reset or increment turns since last capture and push captured pieces to capturedPieces array
     if (!this.grid[endCoordinates.row][endCoordinates.col].isEmpty()) {
@@ -195,6 +195,9 @@ export class Board {
       Game.lastCapture++;
     }
 
+    // does pieces specific actions for each piece before making the move
+    let undoPieceMove = piece.move(this.grid, originId, destId);
+
     // define function to undo move
     let undoFunction = () => {
       piece.row = startCoordinates.row;
@@ -203,8 +206,8 @@ export class Board {
       piece.enPassant = initialEnPassant;
       Game.lastCapture = initialLastCapture;
 
-      this.lastPieceMoved = this.lastPieceMoved;
-      this.lastPieceMoved.enPassant = this.lastPieceMoved.enPassant;
+      this.lastPieceMoved = initialLastPieceMoved;
+      this.lastPieceMoved.enPassant = initialLastPieceMovedEnPassant;
 
       this.grid[startCoordinates.row][startCoordinates.col] = piece;
       this.grid[endCoordinates.row][endCoordinates.col] = endPiece;
@@ -231,6 +234,7 @@ export class Board {
     piece.hasMoved = true;
 
     // set enPassant to false on the last piece moved
+    // update lastPieceMoved
     this.lastPieceMoved.enPassant = false;
     this.lastPieceMoved = piece;
 

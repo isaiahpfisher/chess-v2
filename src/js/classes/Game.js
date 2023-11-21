@@ -44,7 +44,7 @@ export class Game {
       whiteContainer.classList.remove("hidden");
       whiteContainer.innerHTML = "";
       whitePieces.forEach((f) => {
-        whiteContainer.innerHTML += `<img src="${f}">`;
+        whiteContainer.innerHTML += `<img draggable="false" src="${f}">`;
       });
     } else {
       whiteContainer.classList.add("hidden");
@@ -54,7 +54,7 @@ export class Game {
       blackContainer.classList.remove("hidden");
       blackContainer.innerHTML = "";
       blackPieces.forEach((f) => {
-        blackContainer.innerHTML += `<img src="${f}">`;
+        blackContainer.innerHTML += `<img draggable="false" src="${f}">`;
       });
     } else {
       blackContainer.classList.add("hidden");
