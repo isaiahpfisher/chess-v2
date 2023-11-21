@@ -41,23 +41,24 @@ export class Game {
     let blackPieces = this.capturedPieces.filter((f) => f.includes("black"));
 
     if (whitePieces.length > 0) {
-      whiteContainer.classList.remove("hidden");
       whiteContainer.innerHTML = "";
       whitePieces.forEach((f) => {
         whiteContainer.innerHTML += `<img draggable="false" src="${f}">`;
       });
     } else {
-      whiteContainer.classList.add("hidden");
+      whiteContainer.innerHTML = `<img draggable="false" src="./assets/white-pawn.svg">`;
+      whiteContainer.querySelector("img").classList.add("invisible");
     }
 
     if (blackPieces.length > 0) {
-      blackContainer.classList.remove("hidden");
       blackContainer.innerHTML = "";
       blackPieces.forEach((f) => {
         blackContainer.innerHTML += `<img draggable="false" src="${f}">`;
       });
     } else {
-      blackContainer.classList.add("hidden");
+      blackContainer.innerHTML =
+        '<img draggable="false" src="./assets/black-pawn.svg">';
+      blackContainer.querySelector("img").classList.add("invisible");
     }
   }
 
