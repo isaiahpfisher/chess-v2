@@ -11,15 +11,15 @@ import { Rook } from "./pieces/Rook.js";
 // some board-related constants - accessible from anywhere
 export const NUM_ROWS = 8;
 export const NUM_COLS = 8;
-export const WHITE = "white";
-export const BLACK = "black";
+export const WHITE = "White";
+export const BLACK = "Black";
 export const EMPTY_COLOR = "empty-color";
-export const PAWN = "pawn";
-export const KNIGHT = "knight";
-export const BISHOP = "bishop";
-export const ROOK = "rook";
-export const QUEEN = "queen";
-export const KING = "king";
+export const PAWN = "Pawn";
+export const KNIGHT = "Knight";
+export const BISHOP = "Bishop";
+export const ROOK = "Rook";
+export const QUEEN = "Queen";
+export const KING = "King";
 export const EMPTY = "empty";
 export const WHITE_DIRECTION = 1;
 export const BLACK_DIRECTION = -1;
@@ -122,35 +122,55 @@ export class Board {
     // Check if startPiece is invalid
     if (startPiece.isEmpty()) {
       validMove = false;
+      Game.invalidMessage = `Invalid starting location. Please choose a starting location with one of your pieces.`;
     }
 
     // Check if startPiece is from the right team
     else if (turn != startPiece.color) {
       validMove = false;
+      Game.invalidMessage = `It is ${turn}'s turn. Please choose a starting location with a ${turn} piece.`;
     }
 
     // Checks if move is on top of same team
     else if (startPiece.color == endPiece.color) {
       validMove = false;
+      Game.invalidMessage = `You cannot move to a space that already has one of your pieces. Please try again.`;
     }
     // checking if piece is in the way
     else if (startPiece.isPieceInWay(this.grid, originId, destId)) {
       validMove = false;
+      Game.invalidMessage = `There is a piece in the way. Only knights can jump over pieces. Please try again.`;
     }
 
     // piece-specific checks
     else if (!startPiece.isValidMove(this.grid, originId, destId)) {
       validMove = false;
+      Game.invalidMessage = `${startPiece.type}s cannot move that way. Please try again.`;
     }
 
     // in check?
     if (validMove) {
-      // simulate the move - empty array for capturedPieces because just a simulation
+      // currently in check?
+      let currentCheck = this.findKing(turn).isInCheck(this.grid);
+
+      // simulate the move and check if still in check
       let undoFunction = this.move(originId, destId, []);
-      if (this.findKing(turn).isInCheck(this.grid)) {
-        validMove = false;
-      }
+      let stillCheck = this.findKing(turn).isInCheck(this.grid);
       undoFunction();
+
+      // handle error message
+      if (stillCheck) {
+        validMove = false;
+        if (currentCheck) {
+          Game.invalidMessage = `${turn}'s king is currently in check. Please try again.`;
+        } else {
+          Game.invalidMessage = `That move would place ${turn}'s king in check. Please try again.`;
+        }
+      }
+    }
+
+    if (validMove) {
+      Game.invalidMessage = "";
     }
 
     return validMove;

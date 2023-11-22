@@ -100,11 +100,17 @@ export class Game {
     });
 
     // alert box
+    let lastMove = this.moveHistory[0];
     if (Game.invalidMessage != "") {
       document.getElementById("welcome-alert").classList.add("hidden");
       document.getElementById("invalid-alert").classList.remove("hidden");
       document.getElementById("invalid-message").textContent =
         Game.invalidMessage;
+    } else if (lastMove && lastMove.check) {
+      console.log("YOU'RE IN CHECK");
+    } else {
+      document.getElementById("invalid-alert").classList.add("hidden");
+      document.getElementById("welcome-alert").classList.remove("hidden");
     }
   }
 
@@ -223,8 +229,9 @@ export class Game {
       this.undoManager.push(undoFunction);
       this.turnCount++;
       this.turn = this.turn == WHITE ? BLACK : WHITE;
-      this.print();
+      Game.invalidMessage = "";
     }
+    this.print();
   };
 
   /**

@@ -1,4 +1,5 @@
 import { BLACK, KING, NUM_COLS, NUM_ROWS, ROOK } from "../Board.js";
+import { Game } from "../Game.js";
 import { Piece } from "../Piece.js";
 import { Empty } from "./Empty.js";
 

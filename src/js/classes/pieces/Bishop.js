@@ -1,4 +1,5 @@
 import { BISHOP } from "../Board.js";
+import { Game } from "../Game.js";
 import { Piece } from "../Piece.js";
 
 /**
