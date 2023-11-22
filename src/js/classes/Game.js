@@ -252,6 +252,23 @@ export class Game {
   };
 
   /**
+   * Checks if the current board position has occurred for the third time (repetition).
+   * @returns {boolean} - True if the board position has occurred for the third time, otherwise false.
+   */
+  isThirdRepetition() {
+    let board = this.boardHistory[this.boardHistory.length - 1];
+    let matchCount = 0;
+
+    for (let i = 0; i < this.boardHistory.length; i++) {
+      if (this.boardHistory[i] == board) {
+        matchCount++; // Count the number of times the current board position matches previous positions.
+      }
+    }
+
+    return matchCount >= 3; // Returns true if the board position has occurred for the third time.
+  }
+
+  /**
    * Undoes the last move made in the game.
    * It calls the undo function stored in the undo manager,
    * decrements the turn count, updates the current turn color,
