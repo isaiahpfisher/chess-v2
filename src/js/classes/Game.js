@@ -40,8 +40,10 @@ export class Game {
     let whiteContainer = document.getElementById("white-captured-pieces");
     let blackContainer = document.getElementById("black-captured-pieces");
 
-    let whitePieces = this.capturedPieces.filter((f) => f.includes("white"));
-    let blackPieces = this.capturedPieces.filter((f) => f.includes("black"));
+    let whitePieces = this.capturedPieces.filter((f) => f.includes(WHITE));
+    let blackPieces = this.capturedPieces.filter((f) => f.includes(BLACK));
+
+    console.log(whitePieces.length);
 
     if (whitePieces.length > 0) {
       whiteContainer.innerHTML = "";
@@ -102,15 +104,26 @@ export class Game {
     // alert box
     let lastMove = this.moveHistory[0];
     if (Game.invalidMessage != "") {
-      document.getElementById("welcome-alert").classList.add("hidden");
       document.getElementById("invalid-alert").classList.remove("hidden");
       document.getElementById("invalid-message").textContent =
         Game.invalidMessage;
-    } else if (lastMove && lastMove.check) {
-      console.log("YOU'RE IN CHECK");
     } else {
       document.getElementById("invalid-alert").classList.add("hidden");
+    }
+
+    if (lastMove && lastMove.check) {
+      document.getElementById("check-alert").classList.remove("hidden");
+      document.getElementById(
+        "check-message"
+      ).textContent = `${this.turn}'s king is in danger. Can you save him?`;
+    } else {
+      document.getElementById("check-alert").classList.add("hidden");
+    }
+
+    if (Game.invalidMessage == "" && !(lastMove && lastMove.check)) {
       document.getElementById("welcome-alert").classList.remove("hidden");
+    } else {
+      document.getElementById("welcome-alert").classList.add("hidden");
     }
   }
 

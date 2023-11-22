@@ -162,7 +162,7 @@ export class Board {
       if (stillCheck) {
         validMove = false;
         if (currentCheck) {
-          Game.invalidMessage = `${turn}'s king is currently in check. Please try again.`;
+          Game.invalidMessage = `${turn}'s king is currently in check. Your next move must remove the check. Please try again.`;
         } else {
           Game.invalidMessage = `That move would place ${turn}'s king in check. Please try again.`;
         }
