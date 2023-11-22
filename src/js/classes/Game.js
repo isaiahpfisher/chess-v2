@@ -10,6 +10,7 @@ export class Game {
   undoManager = [];
   capturedPieces = [];
   moveHistory = [];
+  boardHistory = [];
 
   /**
    * Constructs new instance of Game.
@@ -42,8 +43,6 @@ export class Game {
 
     let whitePieces = this.capturedPieces.filter((f) => f.includes(WHITE));
     let blackPieces = this.capturedPieces.filter((f) => f.includes(BLACK));
-
-    console.log(whitePieces.length);
 
     if (whitePieces.length > 0) {
       whiteContainer.innerHTML = "";
@@ -242,6 +241,11 @@ export class Game {
       this.undoManager.push(undoFunction);
       this.turnCount++;
       this.turn = this.turn == WHITE ? BLACK : WHITE;
+      if (Game.lastCapture == 0) {
+        this.boardHistory = [];
+      } else {
+        this.boardHistory.push(this.board.getStringRepresentation());
+      }
       Game.invalidMessage = "";
     }
     this.print();
@@ -259,6 +263,7 @@ export class Game {
     undoFunction();
     this.turnCount--;
     this.turn = this.turn == WHITE ? BLACK : WHITE;
+    this.boardHistory.pop();
     this.print();
   }
 }

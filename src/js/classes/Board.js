@@ -287,14 +287,40 @@ export class Board {
     return undoFunction;
   }
 
+  /**
+   * Find the king of a specific color on the game grid.
+   *
+   * @param {string} color - The color of the king to find.
+   * @returns {Object} - The piece object representing the king.
+   */
   findKing(color) {
+    // Iterate over each row on the game grid.
     for (let row = 0; row < NUM_ROWS; row++) {
+      // Iterate over each column on the game grid.
       for (let col = 0; col < NUM_COLS; col++) {
+        // Get the current piece on the grid.
         let piece = this.grid[row][col];
+
+        // Check if the piece is a king and has the specified color.
         if (piece.type == KING && piece.color == color) {
+          // Return the piece object representing the king.
           return piece;
         }
       }
     }
+  }
+
+  /**
+   * Returns a string representation of the grid.
+   * @returns {string} The string representation of the grid.
+   */
+  getStringRepresentation() {
+    let str = "";
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        str += this.grid[row][col].type[0]; // Appends the first character of the cell type to the string.
+      }
+    }
+    return str; // Returns the string representation of the grid.
   }
 }
