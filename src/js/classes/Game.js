@@ -230,6 +230,8 @@ export class Game {
     let originId = e.dataTransfer.getData("text");
     let destId = e.target.closest(".cell").id;
 
+    // check if actually making a move
+
     if (this.board.isValidMove(this.turn, originId, destId)) {
       // make the move and save the undo function
       let undoFunction = this.board.move(
@@ -247,13 +249,14 @@ export class Game {
         this.boardHistory.push(this.board.getStringRepresentation());
       }
       Game.invalidMessage = "";
+      this.isOver();
     }
     this.print();
   };
 
   /**
    * Checks if the current board position has occurred for the third time (repetition).
-   * @returns {boolean} - True if the board position has occurred for the third time, otherwise false.
+   * @returns {boolean} True if the board position has occurred for the third time, otherwise false.
    */
   isThirdRepetition() {
     let board = this.boardHistory[this.boardHistory.length - 1];
@@ -266,6 +269,32 @@ export class Game {
     }
 
     return matchCount >= 3; // Returns true if the board position has occurred for the third time.
+  }
+
+  isOver() {
+    // check for 50 turns since last capture
+    if (Game.lastCapture >= 50) {
+    }
+
+    // check for third repetition
+    if (this.isThirdRepetition()) {
+    }
+
+    // check for insufficient material
+    if (this.board.isInsufficientMaterial()) {
+    }
+
+    // check the mates
+    let isMate = this.board.isMate(this.turn);
+    let isCheck = this.board.findKing(this.turn).isInCheck(this.board.grid);
+
+    if (isMate) {
+      if (isCheck) {
+      } else {
+      }
+    }
+
+    Game.invalidMessage = "";
   }
 
   /**

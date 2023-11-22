@@ -425,15 +425,29 @@ export class Board {
         if (!piece.isEmpty() && piece.color == turn) {
           for (let subRow = 0; subRow < NUM_ROWS; subRow++) {
             for (let subCol = 0; subCol < NUM_COLS; subCol++) {
+              let originId = Piece.getA1Notation(row, col);
+              let destId = Piece.getA1Notation(subRow, subCol);
+
+              // if a valid move
               if (
                 this.isValidMove(
                   turn,
                   Piece.getA1Notation(row, col),
                   Piece.getA1Notation(subRow, subCol)
-                ) &&
-                !currentKing.isInCheck(this.grid)
+                )
               ) {
-                return false; // If a valid move is found that doesn't result in the king being in check, it's not checkmate.
+                // simulate the move
+                let undoFunction = this.move(originId, destId, []);
+
+                // check if in check
+                let isCheck = currentKing.isInCheck(this.grid);
+
+                // undo the simulation
+                undoFunction();
+
+                if (!isCheck) {
+                  return false;
+                } // return false at first sign of valid move that escapes check
               }
             }
           }
