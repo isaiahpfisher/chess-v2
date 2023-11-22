@@ -323,4 +323,90 @@ export class Board {
     }
     return str; // Returns the string representation of the grid.
   }
+
+  /**
+   * Checks if the current chess position has insufficient material for a checkmate.
+   * @returns {boolean} True if the position has insufficient material, otherwise false.
+   */
+  isInsufficientMaterial() {
+    let knights = 0;
+    let whiteBishopsOnWhite = 0;
+    let whiteBishopsOnBlack = 0;
+    let blackBishopsOnWhite = 0;
+    let blackBishopsOnBlack = 0;
+
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        let piece = this.grid[row][col];
+
+        if (piece.type == QUEEN || piece.type == ROOK || piece.type == PAWN) {
+          return false; // If a queen, rook, or pawn is found, the position is not insufficient material.
+        }
+        if (piece.type == KNIGHT) {
+          knights++; // Count the number of knights.
+        }
+        if (piece.type == BISHOP) {
+          if ((row + col) % 2 == 0) {
+            // If the row and column sum is even, the bishop is on a white square.
+            piece.color == WHITE
+              ? whiteBishopsOnWhite++
+              : blackBishopsOnWhite++; // Increment the respective counter.
+          } else {
+            // If the row and column sum is odd, the bishop is on a black square.
+            piece.color == WHITE
+              ? whiteBishopsOnBlack++
+              : blackBishopsOnBlack++; // increment the respective counter.
+          }
+        }
+      }
+    }
+
+    // Insufficient material condition: just two kings (no knights or bishops)
+    if (
+      knights +
+        whiteBishopsOnWhite +
+        whiteBishopsOnBlack +
+        blackBishopsOnWhite +
+        blackBishopsOnBlack ==
+      0
+    ) {
+      return true;
+    }
+
+    // Insufficient material condition: one king and bishop versus one king
+    if (
+      knights == 0 &&
+      ((whiteBishopsOnWhite + whiteBishopsOnBlack == 1 &&
+        blackBishopsOnWhite + blackBishopsOnBlack == 0) ||
+        (whiteBishopsOnWhite + whiteBishopsOnBlack == 0 &&
+          blackBishopsOnWhite + blackBishopsOnBlack == 1))
+    ) {
+      return true;
+    }
+
+    // Insufficient material condition: one king and knight versus one king
+    if (
+      whiteBishopsOnWhite +
+        whiteBishopsOnBlack +
+        blackBishopsOnWhite +
+        blackBishopsOnBlack ==
+        0 &&
+      knights == 1
+    ) {
+      return true;
+    }
+
+    // Insufficient material condition: one king and bishop vs one king and bishop (bishops on same color)
+    if (
+      knights == 0 &&
+      ((whiteBishopsOnBlack + blackBishopsOnBlack == 0 &&
+        whiteBishopsOnWhite + blackBishopsOnWhite == 2) ||
+        (whiteBishopsOnBlack + blackBishopsOnBlack == 2 &&
+          whiteBishopsOnWhite + blackBishopsOnWhite == 0))
+    ) {
+      return true;
+    }
+
+    return false; // The position has sufficient material.
+  }
 }
