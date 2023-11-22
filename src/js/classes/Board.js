@@ -409,4 +409,38 @@ export class Board {
 
     return false; // The position has sufficient material.
   }
+
+  /**
+   * Checks if the current player is in checkmate OR stalemate.
+   * @param {string} turn - The color of the current player (i.e. WHITE or BLACK).
+   * @returns {boolean} True if the current player is in checkmate or stalemate, otherwise false.
+   */
+  isMate(turn) {
+    let currentKing = this.findKing(turn);
+
+    // Check for any possible moves that won't result in the king being under check
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        let piece = this.grid[row][col];
+        if (!piece.isEmpty() && piece.color == turn) {
+          for (let subRow = 0; subRow < NUM_ROWS; subRow++) {
+            for (let subCol = 0; subCol < NUM_COLS; subCol++) {
+              if (
+                this.isValidMove(
+                  turn,
+                  Piece.getA1Notation(row, col),
+                  Piece.getA1Notation(subRow, subCol)
+                ) &&
+                !currentKing.isInCheck(this.grid)
+              ) {
+                return false; // If a valid move is found that doesn't result in the king being in check, it's not checkmate.
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return true; // The current player is in checkmate.
+  }
 }
