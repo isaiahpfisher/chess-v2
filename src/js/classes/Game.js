@@ -85,6 +85,12 @@ export class Game {
         item.querySelector(".captured-piece").classList.remove("hidden");
       }
 
+      console.log(move.check);
+
+      if (move.check) {
+        item.querySelector(".check").classList.remove("hidden");
+      }
+
       if (move.specialMove) {
         item.querySelector(".special-move").innerText = `(${move.specialMove})`;
         item.querySelector(".special-move").classList.remove("hidden");

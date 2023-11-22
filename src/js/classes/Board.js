@@ -257,6 +257,10 @@ export class Board {
 
     // if called from Game.js, push the moveSummary to the moveHistory
     if (moveHistory) {
+      // check if other color in check
+      moveSummary.check = this.findKing(
+        piece.color == WHITE ? BLACK : WHITE
+      ).isInCheck(this.grid);
       moveHistory.unshift(moveSummary);
     }
 
