@@ -231,6 +231,9 @@ export class Game {
     let destId = e.target.closest(".cell").id;
 
     // check if actually making a move
+    if (originId == destId) {
+      return;
+    }
 
     if (this.board.isValidMove(this.turn, originId, destId)) {
       // make the move and save the undo function
