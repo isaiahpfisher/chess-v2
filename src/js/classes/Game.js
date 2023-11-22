@@ -6,6 +6,7 @@ import { BLACK, Board, EMPTY, WHITE } from "./Board.js";
 export class Game {
   static computerMode = true;
   static lastCapture = 0;
+  static invalidMessage = "";
   undoManager = [];
   capturedPieces = [];
   moveHistory = [];
@@ -19,6 +20,7 @@ export class Game {
     this.turnCount = 0;
     this.turn = WHITE;
     Game.lastCapture = 0;
+    Game.invalidMessage = "";
   }
 
   /**
@@ -85,8 +87,6 @@ export class Game {
         item.querySelector(".captured-piece").classList.remove("hidden");
       }
 
-      console.log(move.check);
-
       if (move.check) {
         item.querySelector(".check").classList.remove("hidden");
       }
@@ -98,6 +98,14 @@ export class Game {
 
       moveContainer.appendChild(item);
     });
+
+    // alert box
+    if (Game.invalidMessage != "") {
+      document.getElementById("welcome-alert").classList.add("hidden");
+      document.getElementById("invalid-alert").classList.remove("hidden");
+      document.getElementById("invalid-message").textContent =
+        Game.invalidMessage;
+    }
   }
 
   /**
