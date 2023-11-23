@@ -21,6 +21,7 @@ export class Game {
     this.setupEventListeners();
     this.turnCount = 0;
     this.turn = WHITE;
+    this.gameOver = false;
     Game.lastCapture = 0;
     Game.invalidMessage = "";
     Game.moveHistory = [];
@@ -112,7 +113,7 @@ export class Game {
       document.getElementById("invalid-alert").classList.add("hidden");
     }
 
-    if (lastMove && lastMove.check) {
+    if (!this.gameOver && lastMove && lastMove.check) {
       document.getElementById("check-alert").classList.remove("hidden");
       document.getElementById(
         "check-message"
@@ -121,7 +122,7 @@ export class Game {
       document.getElementById("check-alert").classList.add("hidden");
     }
 
-    if (Game.invalidMessage == "" && !(lastMove && lastMove.check)) {
+    if (this.turnCount == 0) {
       document.getElementById("welcome-alert").classList.remove("hidden");
     } else {
       document.getElementById("welcome-alert").classList.add("hidden");
@@ -271,50 +272,84 @@ export class Game {
     return matchCount >= 3; // Returns true if the board position has occurred for the third time.
   }
 
+  /**
+   * Check if the game is over.
+   */
   isOver() {
     let gameOver = false;
+    let gameOverHeader = document.getElementById("game-over-header");
+    let gameOverMessage = document.getElementById("game-over-message");
+    let gameOverCardHeader = document.getElementById("game-over-card-header");
+    let gameOverCardMessage = document.getElementById("game-over-card-message");
 
-    // check for 50 turns since last capture
+    let header;
+    let message;
+
+    // Check for 50 turns since last capture
     if (Game.lastCapture >= 50) {
       gameOver = true;
     }
 
-    // check for third repetition
+    // Check for third repetition
     if (this.isThirdRepetition()) {
       gameOver = true;
+
+      // Display draw - threefold repetition information
+      header = `Draw - Threefold Repetition`;
+      message = `The current position has occurred three times in this match. Game ends by draw.`;
     }
 
-    // check for insufficient material
+    // Check for insufficient material
     if (this.board.isInsufficientMaterial()) {
       gameOver = true;
+
+      // Display draw - insufficient material information
+      header = `Draw - Insufficient Mating Material`;
+      message = `Both sides lack the pieces to achieve checkmate. There is no way for either side to checkmate the other. Game ends by draw.`;
     }
 
-    // check the mates
+    // Check for mate and check
     let isMate = this.board.isMate(this.turn);
     let isCheck = this.board.findKing(this.turn).isInCheck(this.board.grid);
 
     if (isMate) {
       gameOver = true;
       if (isCheck) {
+        // Display checkmate - winning side information
+        header = `Checkmate - ${this.turn == WHITE ? BLACK : WHITE} Wins!`;
+        message = `${this.turn == WHITE ? BLACK : WHITE} wins by checkmate. ${
+          this.turn
+        } cannot make any move to get out of check.`;
       } else {
+        // Display draw - stalemate information
+        header = `Draw - Stalemate`;
+        message = `${this.turn} is not currently in check, but there is no valid move that will not place their king in check.`;
       }
     }
 
+    gameOverHeader.textContent = header;
+    gameOverCardHeader.textContent = header;
+    gameOverMessage.textContent = message;
+    gameOverCardMessage.textContent = message;
+
     if (gameOver) {
       this.showGameOver();
+      document.getElementById("game-over-card").classList.remove("hidden");
+      this.gameOver = true;
+    } else {
+      document.getElementById("game-over-card").classList.add("hidden");
     }
 
-    console.log(gameOver);
-
     Game.invalidMessage = "";
+
+    return gameOver;
   }
 
   /**
    * Displays the game over modal.
-   * @param {Array} grid - The grid of Pieces from Board.js.
    * @returns {void}
    */
-  showGameOver(grid) {
+  showGameOver() {
     let container = document.getElementById("game-over-container");
     let backdrop = document.getElementById("game-over-backdrop");
     let modal = document.getElementById("game-over-modal");
@@ -355,10 +390,10 @@ export class Game {
         // Animation finished callback
       });
 
-    // let btn = document.getElementById("promote-pawn");
-    // let newBtn = btn.cloneNode(true);
-    // btn.parentNode.replaceChild(newBtn, btn);
-    // newBtn.addEventListener("click", () => this.promotePawn.bind(this)(grid));
+    let btn = document.getElementById("close-game-over-btn");
+    let newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.addEventListener("click", () => this.hideGameOver());
   }
 
   /**
