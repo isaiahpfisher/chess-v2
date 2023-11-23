@@ -154,7 +154,7 @@ export class Board {
       let currentCheck = this.findKing(turn).isInCheck(this.grid);
 
       // simulate the move and check if still in check
-      let undoFunction = this.move(originId, destId, []);
+      let undoFunction = this.move(originId, destId, [], true); // simulation = true;
       let stillCheck = this.findKing(turn).isInCheck(this.grid);
       undoFunction();
 
@@ -180,9 +180,11 @@ export class Board {
    * Moves a piece from its current position (originId) to a specified position (destId) on the grid.
    * @param {string} originId - The ID of the piece's current position.
    * @param {string} destId - The ID of the destination position.
+   * @param {Array} capturedPieces - Array of captured pieces for graphic
+   * @param {boolean} simulation - Indicates whether or not this move is a simulation that will be undone
    * @returns {function} - Returns an undo function to undo the move.
    */
-  move(originId, destId, capturedPieces, moveHistory) {
+  move(originId, destId, capturedPieces, simulation) {
     // Get the start and end coordinates (row and column)
     let startCoordinates = Piece.getCoordinates(originId);
     let endCoordinates = Piece.getCoordinates(destId);
@@ -233,7 +235,7 @@ export class Board {
     }
 
     // does pieces specific actions for each piece before making the move
-    let undoPieceMove = piece.move(this.grid, originId, destId);
+    let undoPieceMove = piece.move(this.grid, originId, destId, simulation);
 
     // define function to undo move
     let undoFunction = () => {
@@ -276,12 +278,12 @@ export class Board {
     this.lastPieceMoved = piece;
 
     // if called from Game.js, push the moveSummary to the moveHistory
-    if (moveHistory) {
+    if (!simulation) {
       // check if other color in check
       moveSummary.check = this.findKing(
         piece.color == WHITE ? BLACK : WHITE
       ).isInCheck(this.grid);
-      moveHistory.unshift(moveSummary);
+      Game.moveHistory.unshift(moveSummary);
     }
 
     return undoFunction;
@@ -437,7 +439,7 @@ export class Board {
                 )
               ) {
                 // simulate the move
-                let undoFunction = this.move(originId, destId, []);
+                let undoFunction = this.move(originId, destId, [], true); // simulation = true;
 
                 // check if in check
                 let isCheck = currentKing.isInCheck(this.grid);

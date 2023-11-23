@@ -99,7 +99,7 @@ export class Pawn extends Piece {
    * @param {number} destId - The id of the piece's destination position.
    * @returns {void}
    */
-  move(grid, originId, destId) {
+  move(grid, originId, destId, simulation) {
     let undoFunction = undefined;
 
     let direction = this.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
@@ -129,12 +129,20 @@ export class Pawn extends Piece {
 
     // handle pawn promotion
     if (endCoordinates.row == (this.color == WHITE ? 7 : 0)) {
-      if (this.color == BLACK && Game.computerMode) {
+      let row = this.row;
+      let col = this.col;
+      let oldPawn = this;
+      console.log(this.color + " - " + simulation);
+      if (simulation || (this.color == BLACK && Game.computerMode)) {
         this.promotionSelection = QUEEN;
-        this.promotePawn(grid);
+        this.promotePawn(grid, simulation);
       } else {
         this.showPawnPromotion(grid);
       }
+      let newPawn = grid[row][col];
+      undoFunction = () => {
+        grid[row][col] = oldPawn;
+      };
     }
 
     return undoFunction;
@@ -145,9 +153,9 @@ export class Pawn extends Piece {
    * @param {Array} grid - The game grid representing the chessboard.
    * @returns {void}
    */
-  promotePawn(grid) {
+  promotePawn(grid, simulation) {
     // Check if the game is not in computer mode
-    if (!(Game.computerMode && this.color == BLACK)) {
+    if (!(simulation || (Game.computerMode && this.color == BLACK))) {
       // Get the selected promotion value from the radio input
       this.promotionSelection = document.querySelector(
         'input[name="promotion-selection"]:checked'
@@ -177,7 +185,9 @@ export class Pawn extends Piece {
     this.board.print();
 
     // Hide the pawn promotion interface
-    this.hidePawnPromotion();
+    if (!simulation) {
+      this.hidePawnPromotion();
+    }
   }
 
   /**

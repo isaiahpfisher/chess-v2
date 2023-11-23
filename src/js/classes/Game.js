@@ -7,6 +7,7 @@ export class Game {
   static computerMode = true;
   static lastCapture = 0;
   static invalidMessage = "";
+  static moveHistory = [];
   undoManager = [];
   capturedPieces = [];
   moveHistory = [];
@@ -22,6 +23,7 @@ export class Game {
     this.turn = WHITE;
     Game.lastCapture = 0;
     Game.invalidMessage = "";
+    Game.moveHistory = [];
   }
 
   /**
@@ -68,14 +70,14 @@ export class Game {
     // move history
     let moveContainer = document.getElementById("move-history");
     moveContainer.innerHTML = "";
-    this.moveHistory.forEach((move, turn) => {
+    Game.moveHistory.forEach((move, turn) => {
       // Get template element
       let template = document.querySelector("#move-history-template");
       // Clone template content
       let item = template.content.cloneNode(true);
 
       item.querySelector(".turn-number").innerText =
-        this.moveHistory.length - turn;
+        Game.moveHistory.length - turn;
 
       item.querySelector(".start-piece img").src = move.startPiece.imgSrc;
       item.querySelector(
@@ -101,7 +103,7 @@ export class Game {
     });
 
     // alert box
-    let lastMove = this.moveHistory[0];
+    let lastMove = Game.moveHistory[0];
     if (Game.invalidMessage != "") {
       document.getElementById("invalid-alert").classList.remove("hidden");
       document.getElementById("invalid-message").textContent =
@@ -237,12 +239,7 @@ export class Game {
 
     if (this.board.isValidMove(this.turn, originId, destId)) {
       // make the move and save the undo function
-      let undoFunction = this.board.move(
-        originId,
-        destId,
-        this.capturedPieces,
-        this.moveHistory
-      );
+      let undoFunction = this.board.move(originId, destId, this.capturedPieces);
       this.undoManager.push(undoFunction);
       this.turnCount++;
       this.turn = this.turn == WHITE ? BLACK : WHITE;
