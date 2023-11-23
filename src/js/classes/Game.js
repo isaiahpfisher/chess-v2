@@ -272,16 +272,21 @@ export class Game {
   }
 
   isOver() {
+    let gameOver = false;
+
     // check for 50 turns since last capture
     if (Game.lastCapture >= 50) {
+      gameOver = true;
     }
 
     // check for third repetition
     if (this.isThirdRepetition()) {
+      gameOver = true;
     }
 
     // check for insufficient material
     if (this.board.isInsufficientMaterial()) {
+      gameOver = true;
     }
 
     // check the mates
@@ -289,12 +294,114 @@ export class Game {
     let isCheck = this.board.findKing(this.turn).isInCheck(this.board.grid);
 
     if (isMate) {
+      gameOver = true;
       if (isCheck) {
       } else {
       }
     }
 
+    if (gameOver) {
+      this.showGameOver();
+    }
+
+    console.log(gameOver);
+
     Game.invalidMessage = "";
+  }
+
+  /**
+   * Displays the game over modal.
+   * @param {Array} grid - The grid of Pieces from Board.js.
+   * @returns {void}
+   */
+  showGameOver(grid) {
+    let container = document.getElementById("game-over-container");
+    let backdrop = document.getElementById("game-over-backdrop");
+    let modal = document.getElementById("game-over-modal");
+
+    container.classList.remove("hidden");
+    backdrop.classList.remove("hidden", "ease-in", "duration-200");
+    modal.classList.remove("hidden");
+
+    modal
+      .animate(
+        [
+          {
+            opacity: "0",
+            transform: "translateY(4px) scale(0.95)",
+            "transform-origin": "center",
+          },
+          {
+            opacity: "100",
+            transform: "translateY(0) scale(1)",
+            "transform-origin": "center",
+          },
+        ],
+        {
+          duration: 300,
+          easing: "ease-out",
+        }
+      )
+      .finished.then(() => {
+        // Animation finished callback
+      });
+
+    backdrop
+      .animate([{ opacity: "0" }, { opacity: "100" }], {
+        duration: 300,
+        easing: "ease-out",
+      })
+      .finished.then(() => {
+        // Animation finished callback
+      });
+
+    // let btn = document.getElementById("promote-pawn");
+    // let newBtn = btn.cloneNode(true);
+    // btn.parentNode.replaceChild(newBtn, btn);
+    // newBtn.addEventListener("click", () => this.promotePawn.bind(this)(grid));
+  }
+
+  /**
+   * Hides the game over modal.
+   * @return {void}
+   */
+  hideGameOver() {
+    let container = document.getElementById("game-over-container");
+    let backdrop = document.getElementById("game-over-backdrop");
+    let modal = document.getElementById("game-over-modal");
+
+    modal
+      .animate(
+        [
+          {
+            opacity: "100",
+            transform: "translateY(0) scale(1)",
+            "transform-origin": "center",
+          },
+          {
+            opacity: "0",
+            transform: "translateY(4px) scale(0.95)",
+            "transform-origin": "center",
+          },
+        ],
+        {
+          duration: 200,
+          easing: "ease-in",
+        }
+      )
+      .finished.then(() => {
+        modal.classList.add("hidden");
+      });
+
+    backdrop
+      .animate([{ opacity: "100" }, { opacity: "0" }], {
+        duration: 200,
+        easing: "ease-in",
+      })
+      .finished.then(() => {
+        backdrop.classList.add("hidden");
+        container.classList.add("hidden");
+      });
   }
 
   /**
