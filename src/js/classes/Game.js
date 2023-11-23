@@ -26,6 +26,7 @@ export class Game {
     Game.lastCapture = 0;
     Game.invalidMessage = "";
     Game.moveHistory = [];
+    this.print();
   }
 
   /**
@@ -133,6 +134,10 @@ export class Game {
     } else {
       document.getElementById("welcome-alert").classList.add("hidden");
     }
+
+    if (!this.gameOver) {
+      document.getElementById("game-over-card").classList.add("hidden");
+    }
   }
 
   /**
@@ -149,6 +154,7 @@ export class Game {
       newImg.addEventListener("dragover", this.dragOverSpace);
       newImg.addEventListener("dragleave", this.dragLeaveSpace);
       newImg.addEventListener("dragstart", this.dragPieceStart);
+      newImg.querySelector("img").draggable = true;
     });
 
     // for game mode
