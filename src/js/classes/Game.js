@@ -166,7 +166,7 @@ export class Game {
     Game.toggleComputerMode();
 
     // Toggle background colors
-    document.getElementById("mode-toggle").classList.toggle("bg-indigo-600");
+    document.getElementById("mode-toggle").classList.toggle("bg-primary-600");
     document.getElementById("mode-toggle").classList.toggle("bg-gray-200");
 
     // Toggle translation effect
