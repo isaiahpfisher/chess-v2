@@ -98,6 +98,18 @@ export class Board {
         document.querySelector(`#${cellId}`).piece = this.grid[row][col];
         document.querySelector(`#${cellId}`).querySelector("img").src =
           this.grid[row][col].imgSrc;
+
+        if (this.grid[row][col].imgSrc != "") {
+          document
+            .querySelector(`#${cellId}`)
+            .querySelector("img")
+            .classList.remove("hidden");
+        } else {
+          document
+            .querySelector(`#${cellId}`)
+            .querySelector("img")
+            .classList.add("hidden");
+        }
       }
     }
   }
