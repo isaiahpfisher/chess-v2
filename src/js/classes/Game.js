@@ -22,6 +22,7 @@ export class Game {
     this.turnCount = 0;
     this.turn = WHITE;
     this.gameOver = false;
+    this.gameResult = "";
     Game.lastCapture = 0;
     Game.invalidMessage = "";
     Game.moveHistory = [];
@@ -91,8 +92,13 @@ export class Game {
         item.querySelector(".captured-piece").classList.remove("hidden");
       }
 
-      if (move.check) {
+      if (!this.gameOver && move.check) {
         item.querySelector(".check").classList.remove("hidden");
+      }
+
+      if (turn == 0 && this.gameOver) {
+        item.querySelector(".game-over").textContent = this.gameResult;
+        item.querySelector(".game-over").classList.remove("hidden");
       }
 
       if (move.specialMove) {
@@ -149,6 +155,26 @@ export class Game {
     document
       .querySelector("#mode-toggle")
       .addEventListener("click", this.changeGameMode.bind(this));
+  }
+
+  /**
+   * Removes all event listeners on the board to disable new moves.
+   * @returns {void}
+   */
+  removeEventListeners() {
+    // for drag-and-drop
+    document.querySelectorAll(".chessboard .row .cell").forEach((img) => {
+      img.removeEventListener("drop", this.dropPiece);
+      img.removeEventListener("dragover", this.dragOverSpace);
+      img.removeEventListener("dragleave", this.dragLeaveSpace);
+      img.removeEventListener("dragstart", this.dragPieceStart);
+      img.querySelector("img").draggable = false;
+    });
+
+    // for game mode
+    document
+      .querySelector("#mode-toggle")
+      .removeEventListener("click", this.changeGameMode.bind(this));
   }
 
   /**
@@ -276,7 +302,6 @@ export class Game {
    * Check if the game is over.
    */
   isOver() {
-    let gameOver = false;
     let gameOverHeader = document.getElementById("game-over-header");
     let gameOverMessage = document.getElementById("game-over-message");
     let gameOverCardHeader = document.getElementById("game-over-card-header");
@@ -287,12 +312,16 @@ export class Game {
 
     // Check for 50 turns since last capture
     if (Game.lastCapture >= 50) {
-      gameOver = true;
+      this.gameOver = true;
+      this.gameResult = "50 Moves";
+      header = `Draw - 50 Moves`;
+      message = `It has been 50 moves since a piece has been captured. Game ends by draw.`;
     }
 
     // Check for third repetition
     if (this.isThirdRepetition()) {
-      gameOver = true;
+      this.gameOver = true;
+      this.gameResult = "3 Repetitions";
 
       // Display draw - threefold repetition information
       header = `Draw - Threefold Repetition`;
@@ -301,7 +330,8 @@ export class Game {
 
     // Check for insufficient material
     if (this.board.isInsufficientMaterial()) {
-      gameOver = true;
+      this.gameOver = true;
+      this.gameResult = "Insufficient Material";
 
       // Display draw - insufficient material information
       header = `Draw - Insufficient Mating Material`;
@@ -313,15 +343,18 @@ export class Game {
     let isCheck = this.board.findKing(this.turn).isInCheck(this.board.grid);
 
     if (isMate) {
-      gameOver = true;
+      this.gameOver = true;
+
       if (isCheck) {
         // Display checkmate - winning side information
+        this.gameResult = "Checkmate";
         header = `Checkmate - ${this.turn == WHITE ? BLACK : WHITE} Wins!`;
         message = `${this.turn == WHITE ? BLACK : WHITE} wins by checkmate. ${
           this.turn
         } cannot make any move to get out of check.`;
       } else {
         // Display draw - stalemate information
+        this.gameResult = "Stalemate";
         header = `Draw - Stalemate`;
         message = `${this.turn} is not currently in check, but there is no valid move that will not place their king in check.`;
       }
@@ -332,17 +365,15 @@ export class Game {
     gameOverMessage.textContent = message;
     gameOverCardMessage.textContent = message;
 
-    if (gameOver) {
+    if (this.gameOver) {
       this.showGameOver();
       document.getElementById("game-over-card").classList.remove("hidden");
-      this.gameOver = true;
+      this.removeEventListeners();
     } else {
       document.getElementById("game-over-card").classList.add("hidden");
     }
 
     Game.invalidMessage = "";
-
-    return gameOver;
   }
 
   /**
