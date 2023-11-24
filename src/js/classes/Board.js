@@ -91,7 +91,7 @@ export class Board {
   /**
    * Prints the current board layout to the screen.
    */
-  print() {
+  print(turn) {
     for (let row = 0; row < NUM_ROWS; row++) {
       for (let col = 0; col < NUM_COLS; col++) {
         let cellId = Piece.getA1Notation(row, col);
@@ -110,6 +110,9 @@ export class Board {
             .querySelector("img")
             .classList.add("hidden");
         }
+
+        document.querySelector(`#${cellId}`).querySelector("img").draggable =
+          this.grid[row][col].color == turn;
       }
     }
   }
@@ -262,6 +265,10 @@ export class Board {
 
       this.grid[startCoordinates.row][startCoordinates.col] = piece;
       this.grid[endCoordinates.row][endCoordinates.col] = endPiece;
+
+      if (moveSummary.capturedPiece.type != EMPTY) {
+        capturedPieces.pop();
+      }
 
       if (undoPieceMove) {
         undoPieceMove();
@@ -461,35 +468,64 @@ export class Board {
     return true; // The current player is in checkmate.
   }
 
+  /**
+   * Evaluate the score of the current board position for a given color.
+   * @param {string} color - The color of the pieces to evaluate.
+   * @returns {number} - The score of the board position.
+   */
   evaluateBoard(color) {
+    // Determine the enemy color
     let enemyColor = color == WHITE ? BLACK : WHITE;
+
+    // Find the current king and enemy king
     let currentKing = this.findKing(color);
-    let enemyKing = this.findKing(color == WHITE ? BLACK : WHITE);
+    let enemyKing = this.findKing(enemyColor);
+
     let score = 0;
+
+    // Evaluate the score based on the number of queens
     score +=
       9 *
       (this.countPieces(QUEEN, color) - this.countPieces(QUEEN, enemyColor));
+
+    // Evaluate the score based on the king's check status
     score +=
-      8 * (enemyKing.isInCheck(this.grid) - currentKing.isInCheck(this.grid));
+      4 * (enemyKing.isInCheck(this.grid) - currentKing.isInCheck(this.grid));
+
+    // Evaluate the score based on the number of rooks
     score +=
       5 * (this.countPieces(ROOK, color) - this.countPieces(ROOK, enemyColor));
+
+    // Evaluate the score based on the number of bishops
     score +=
       3 *
       (this.countPieces(BISHOP, color) - this.countPieces(BISHOP, enemyColor));
+
+    // Evaluate the score based on the number of knights
     score +=
       3 *
       (this.countPieces(KNIGHT, color) - this.countPieces(KNIGHT, enemyColor));
+
+    // Evaluate the score based on the number of pawns
     score +=
       1 * (this.countPieces(PAWN, color) - this.countPieces(PAWN, enemyColor));
+
+    // Penalize for blocked pawns
     score -=
       0.5 *
       (this.countBlockedPawns(color) - this.countBlockedPawns(enemyColor));
+
+    // Penalize for isolated pawns
     score -=
       0.5 *
       (this.countIsolatedPawns(color) - this.countIsolatedPawns(enemyColor));
+
+    // Penalize for doubled pawns
     score -=
       0.5 *
       (this.countDoubledPawns(color) - this.countDoubledPawns(enemyColor));
+
+    // Reward for higher number of legal moves
     score +=
       0.1 *
       (this.countTotalLegalMoves(color) -

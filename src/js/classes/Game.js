@@ -1,10 +1,11 @@
-import { BLACK, Board, EMPTY, WHITE } from "./Board.js";
+import { BLACK, Board, EMPTY, NUM_COLS, NUM_ROWS, WHITE } from "./Board.js";
+import { Piece } from "./Piece.js";
 
 /**
  * Represents a game of chess.
  */
 export class Game {
-  static computerMode = true;
+  static computerMode = false;
   static lastCapture = 0;
   static invalidMessage = "";
   static moveHistory = [];
@@ -26,6 +27,7 @@ export class Game {
     Game.lastCapture = 0;
     Game.invalidMessage = "";
     Game.moveHistory = [];
+    this.changeGameMode();
     this.print();
   }
 
@@ -33,7 +35,7 @@ export class Game {
    * Prints all aspects of the game to the screen.
    */
   print() {
-    this.board.print();
+    this.board.print(this.turn);
 
     // basic stats
     document.getElementById("to-move").textContent =
@@ -220,6 +222,17 @@ export class Game {
       document.getElementById("mode-description").textContent =
         "Enable to play against a computer opponent.";
     }
+
+    // loop through board and make black pieces draggable or not
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        if (this.board.grid[row][col].color == BLACK) {
+          document
+            .getElementById(Piece.getA1Notation(row, col))
+            .querySelector("img").draggable = !Game.computerMode;
+        }
+      }
+    }
   }
 
   /**
@@ -281,31 +294,90 @@ export class Game {
     // check if actually making a move
     if (originId != destId) {
       if (this.board.isValidMove(this.turn, originId, destId)) {
-        // make the move and save the undo function
-        let undoFunction = this.board.move(
-          originId,
-          destId,
-          this.capturedPieces
-        );
+        this.doMove(originId, destId, false); // simulation = false;
+      } else {
+        this.print();
+      }
 
-        // console.log("WHITE: " + this.board.evaluateBoard(WHITE));
-        // console.log("BLACK: " + this.board.evaluateBoard(BLACK));
-
-        this.undoManager.push(undoFunction);
-        this.turnCount++;
-        this.turn = this.turn == WHITE ? BLACK : WHITE;
-        if (Game.lastCapture == 0) {
-          this.boardHistory = [];
-        } else {
-          this.boardHistory.push(this.board.getStringRepresentation());
-        }
-        Game.invalidMessage = "";
-        this.isOver();
+      // do computer move?
+      if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
+        this.doComputerMove();
       }
     }
+
     document.getElementById(destId).classList.remove("border-primary-700");
-    this.print();
   };
+
+  doMove(originId, destId, simulation) {
+    // make the move and save the undo function
+    let undoFunction = this.board.move(
+      originId,
+      destId,
+      this.capturedPieces,
+      simulation
+    );
+
+    // add the undo function to the undo manager
+    this.undoManager.push(undoFunction);
+
+    // increment the turn
+    this.turnCount++;
+    this.turn = this.turn == WHITE ? BLACK : WHITE;
+
+    // manage the board history and turns since last capture
+    if (Game.lastCapture == 0) {
+      this.boardHistory = [];
+    } else {
+      this.boardHistory.push(this.board.getStringRepresentation());
+    }
+
+    this.isOver();
+    this.print();
+  }
+
+  doComputerMove(levels) {
+    let moveDetails = this.findBestMove(BLACK);
+    this.doMove(moveDetails.originId, moveDetails.destId, false); // simulation = false;
+
+    // reset the invalid message
+    Game.invalidMessage = "";
+  }
+
+  findBestMove(color) {
+    let finalOriginId, finalDestId;
+    let maxPosition = -1000;
+
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        let piece = this.board.grid[row][col];
+        if (piece.color == this.turn) {
+          for (let subRow = 0; subRow < NUM_ROWS; subRow++) {
+            for (let subCol = 0; subCol < NUM_COLS; subCol++) {
+              let originId = Piece.getA1Notation(row, col);
+              let destId = Piece.getA1Notation(subRow, subCol);
+
+              if (this.board.isValidMove(this.turn, originId, destId)) {
+                this.doMove(originId, destId, true); // simulation = true;
+
+                let position = this.board.evaluateBoard(color);
+                if (position > maxPosition) {
+                  maxPosition = position;
+                  finalOriginId = Piece.getA1Notation(row, col);
+                  finalDestId = Piece.getA1Notation(subRow, subCol);
+                }
+                this.undo();
+              }
+            }
+          }
+        }
+      }
+    }
+    return {
+      originId: finalOriginId,
+      destId: finalDestId,
+      position: maxPosition,
+    };
+  }
 
   /**
    * Checks if the current board position has occurred for the third time (repetition).
@@ -509,6 +581,7 @@ export class Game {
     this.turnCount--;
     this.turn = this.turn == WHITE ? BLACK : WHITE;
     this.boardHistory.pop();
+    Game.moveHistory.shift();
     this.print();
   }
 }
