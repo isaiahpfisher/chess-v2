@@ -35,7 +35,7 @@ export class Game {
   print() {
     this.board.print();
 
-    // basis stats
+    // basic stats
     document.getElementById("to-move").textContent =
       this.turn[0].toUpperCase() + this.turn.substring(1);
     document.getElementById("turn-count").textContent = this.turnCount;
@@ -129,7 +129,7 @@ export class Game {
       document.getElementById("check-alert").classList.add("hidden");
     }
 
-    if (this.turnCount == 0) {
+    if (Game.invalidMessage == "" && this.turnCount == 0) {
       document.getElementById("welcome-alert").classList.remove("hidden");
     } else {
       document.getElementById("welcome-alert").classList.add("hidden");
@@ -154,6 +154,7 @@ export class Game {
       newImg.addEventListener("dragover", this.dragOverSpace);
       newImg.addEventListener("dragleave", this.dragLeaveSpace);
       newImg.addEventListener("dragstart", this.dragPieceStart);
+      newImg.addEventListener("dragend", this.dragEnd);
       newImg.querySelector("img").draggable = true;
     });
 
@@ -174,6 +175,7 @@ export class Game {
       img.removeEventListener("dragover", this.dragOverSpace);
       img.removeEventListener("dragleave", this.dragLeaveSpace);
       img.removeEventListener("dragstart", this.dragPieceStart);
+      img.removeEventListener("dragend", this.dragEnd);
       img.querySelector("img").draggable = false;
     });
 
@@ -228,7 +230,17 @@ export class Game {
    */
   dragOverSpace(e) {
     e.preventDefault();
-    // e.target.closest(".cell").classList.add(""); TODO: Add a class here to style spaces when hovered over
+    e.target.closest(".cell").classList.add("border-primary-700");
+  }
+
+  /**
+   * Runs when drag event stops.
+   * Removes the opacity class after a drag and drop.
+   * @param {Event} e
+   * @returns {void}
+   */
+  dragEnd(e) {
+    e.target.classList.remove("opacity-25");
   }
 
   /**
@@ -239,7 +251,7 @@ export class Game {
    */
   dragLeaveSpace(e) {
     e.preventDefault();
-    // e.target.closest(".cell").remove.add(""); TODO: Remove a class here to style spaces when hovered over
+    e.target.closest(".cell").classList.remove("border-primary-700");
   }
 
   /**
@@ -251,6 +263,7 @@ export class Game {
   dragPieceStart(e) {
     e.dataTransfer.setData("text", e.target.closest(".cell").id);
     e.dataTransfer.effectAllowed = "move";
+    e.target.closest(".cell").querySelector("img").classList.add("opacity-25");
   }
 
   /**
@@ -266,24 +279,27 @@ export class Game {
     let destId = e.target.closest(".cell").id;
 
     // check if actually making a move
-    if (originId == destId) {
-      return;
-    }
-
-    if (this.board.isValidMove(this.turn, originId, destId)) {
-      // make the move and save the undo function
-      let undoFunction = this.board.move(originId, destId, this.capturedPieces);
-      this.undoManager.push(undoFunction);
-      this.turnCount++;
-      this.turn = this.turn == WHITE ? BLACK : WHITE;
-      if (Game.lastCapture == 0) {
-        this.boardHistory = [];
-      } else {
-        this.boardHistory.push(this.board.getStringRepresentation());
+    if (originId != destId) {
+      if (this.board.isValidMove(this.turn, originId, destId)) {
+        // make the move and save the undo function
+        let undoFunction = this.board.move(
+          originId,
+          destId,
+          this.capturedPieces
+        );
+        this.undoManager.push(undoFunction);
+        this.turnCount++;
+        this.turn = this.turn == WHITE ? BLACK : WHITE;
+        if (Game.lastCapture == 0) {
+          this.boardHistory = [];
+        } else {
+          this.boardHistory.push(this.board.getStringRepresentation());
+        }
+        Game.invalidMessage = "";
+        this.isOver();
       }
-      Game.invalidMessage = "";
-      this.isOver();
     }
+    document.getElementById(destId).classList.remove("border-primary-700");
     this.print();
   };
 
