@@ -530,4 +530,57 @@ export class Board {
 
     return totalCount;
   }
+
+  /**
+   * Counts the number of isolated pawns on the grid for the specified color.
+   *
+   * @param {string} color - The color of the pawns to count.
+   * @returns {number} - The count of isolated pawns.
+   */
+  countIsolatedPawns(color) {
+    let totalCount = 0;
+
+    // Traverse each column of the grid
+    for (let col = 0; col < NUM_COLS; col++) {
+      let prevCount = 0;
+      let currCount = 0;
+      let nextCount = 0;
+
+      // Traverse each row of the current column
+      for (let row = 0; row < NUM_ROWS; row++) {
+        // Check if the previous column has a pawn of the specified color
+        if (
+          col > 0 &&
+          this.grid[row][col - 1].type == PAWN &&
+          this.grid[row][col - 1].color == color
+        ) {
+          prevCount++;
+        }
+
+        // Check if the current position has a pawn of the specified color
+        if (
+          this.grid[row][col].type == PAWN &&
+          this.grid[row][col].color == color
+        ) {
+          currCount++;
+        }
+
+        // Check if the next column has a pawn of the specified color
+        if (
+          col < NUM_COLS - 1 &&
+          this.grid[row][col + 1].type == PAWN &&
+          this.grid[row][col + 1].color == color
+        ) {
+          nextCount++;
+        }
+      }
+
+      // If the current column has isolated pawns of the specified color, add the count to the total count
+      if (currCount > 0 && prevCount === 0 && nextCount === 0) {
+        totalCount += currCount;
+      }
+    }
+
+    return totalCount;
+  }
 }
