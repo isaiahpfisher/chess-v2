@@ -583,4 +583,45 @@ export class Board {
 
     return totalCount;
   }
+
+  /**
+   * Counts the number of blocked pawns on the grid for the specified color.
+   *
+   * @param {string} color - The color of the pawns to count.
+   * @returns {number} - The count of blocked pawns.
+   */
+  countBlockedPawns(color) {
+    let direction = color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
+    let enemyColor = color == WHITE ? BLACK : WHITE;
+    let totalCount = 0;
+
+    // Traverse each row of the grid
+    for (let row = 0; row < NUM_ROWS; row++) {
+      let count = 0;
+
+      // Traverse each column of the current row
+      for (let col = 0; col < NUM_COLS; col++) {
+        // Check if the current position has a pawn of the specified color
+        if (
+          this.grid[row][col].type == PAWN &&
+          this.grid[row][col].color == color
+        ) {
+          if ((color == WHITE && row == 0) || (color == BLACK && row == 7)) {
+            totalCount++;
+          } else if (!this.grid[row + direction][col].isEmpty()) {
+            if (
+              (col == 0 ||
+                this.grid[row + direction][col - 1].color != enemyColor) &&
+              (col == 7 ||
+                this.grid[row + direction][col + 1].color != enemyColor)
+            ) {
+              totalCount++;
+            }
+          }
+        }
+      }
+    }
+
+    return totalCount;
+  }
 }
