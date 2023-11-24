@@ -450,18 +450,7 @@ export class Board {
                   Piece.getA1Notation(subRow, subCol)
                 )
               ) {
-                // simulate the move
-                let undoFunction = this.move(originId, destId, [], true); // simulation = true;
-
-                // check if in check
-                let isCheck = currentKing.isInCheck(this.grid);
-
-                // undo the simulation
-                undoFunction();
-
-                if (!isCheck) {
-                  return false;
-                } // return false at first sign of valid move that escapes check
+                return false; // return false at first sign of valid move
               }
             }
           }
@@ -623,5 +612,38 @@ export class Board {
     }
 
     return totalCount;
+  }
+
+  /**
+   * Counts the total number of legal moves for a given color.
+   *
+   * @param {string} color - The color of the pieces to count the legal moves for.
+   * @returns {number} - The total number of legal moves.
+   */
+  countTotalLegalMoves(color) {
+    let totalMoves = 0;
+    let currentKing = this.findKing(color);
+
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        let piece = this.grid[row][col];
+
+        // Check if the piece is of the specified color
+        if (piece.color == color) {
+          for (let subRow = 0; subRow < NUM_ROWS; subRow++) {
+            for (let subCol = 0; subCol < NUM_COLS; subCol++) {
+              let originId = Piece.getA1Notation(row, col);
+              let destId = Piece.getA1Notation(subRow, subCol);
+
+              // if the move is valid
+              if (this.isValidMove(color, originId, destId)) {
+                totalMoves++; // increment legal move count if valid move
+              }
+            }
+          }
+        }
+      }
+    }
+    return totalMoves;
   }
 }
