@@ -497,4 +497,37 @@ export class Board {
 
     return count;
   }
+
+  /**
+   * Counts the number of doubled pawns on the grid for the specified color.
+   *
+   * @param {string} color - The color of the pawns to count.
+   * @returns {number} - The count of doubled pawns.
+   */
+  countDoubledPawns(color) {
+    let totalCount = 0;
+
+    // Traverse each column of the grid
+    for (let col = 0; col < NUM_COLS; col++) {
+      let count = 0;
+
+      // Traverse each row of the current column
+      for (let row = 0; row < NUM_ROWS; row++) {
+        // Check if the current piece is a pawn of the specified color
+        if (
+          this.grid[row][col].type == PAWN &&
+          this.grid[row][col].color == color
+        ) {
+          count++;
+        }
+      }
+
+      // If there are pawns of the specified color in the current column, add the count to the total count
+      if (count > 0) {
+        totalCount += count;
+      }
+    }
+
+    return totalCount;
+  }
 }
