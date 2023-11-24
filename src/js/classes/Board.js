@@ -158,7 +158,9 @@ export class Board {
     }
 
     // piece-specific checks
-    else if (!startPiece.isValidMove(this.grid, originId, destId)) {
+    else if (
+      !startPiece.isValidMove(this.grid, this.move.bind(this), originId, destId)
+    ) {
       validMove = false;
       Game.invalidMessage = `${startPiece.type}s cannot move that way. Please try again.`;
     }

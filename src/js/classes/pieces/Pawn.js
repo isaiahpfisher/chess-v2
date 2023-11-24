@@ -44,7 +44,7 @@ export class Pawn extends Piece {
    * @param {string} destId - id of ending space (e.g. A2 or H8)
    * @returns {boolean}
    */
-  isValidMove(grid, originId, destId) {
+  isValidMove(grid, boardMove, originId, destId) {
     let validMove = true;
     let direction = this.color == WHITE ? WHITE_DIRECTION : BLACK_DIRECTION;
 

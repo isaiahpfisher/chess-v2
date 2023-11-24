@@ -1,4 +1,4 @@
-import { BLACK, KING, NUM_COLS, NUM_ROWS, ROOK } from "../Board.js";
+import { BISHOP, BLACK, KING, NUM_COLS, NUM_ROWS, ROOK } from "../Board.js";
 import { Game } from "../Game.js";
 import { Piece } from "../Piece.js";
 import { Empty } from "./Empty.js";
@@ -29,7 +29,7 @@ export class King extends Piece {
    * @param {string} destId - id of ending space (e.g. A2 or H8)
    * @returns {boolean}
    */
-  isValidMove(grid, originId, destId) {
+  isValidMove(grid, boardMove, originId, destId) {
     let startCoordinates = Piece.getCoordinates(originId);
     let endCoordinates = Piece.getCoordinates(destId);
 
@@ -64,12 +64,23 @@ export class King extends Piece {
         validMove = false;
       }
       // currently in check
-      else if (this.isInCheck(grid, -1, -1, -1, -1)) {
-        validMove = false;
-      }
-      // pass through a check
       else if (this.isInCheck(grid)) {
         validMove = false;
+      }
+
+      if (validMove) {
+        // simulate the move and check if still in check
+        let undoFunction = boardMove(
+          originId,
+          Piece.getA1Notation(midRow, midCol),
+          [],
+          true
+        ); // simulation = true;
+        let inCheck = this.isInCheck(grid, true);
+        undoFunction();
+        if (inCheck) {
+          validMove = false;
+        }
       }
     }
     // moved more than one space
@@ -142,8 +153,10 @@ export class King extends Piece {
         // Check if the piece is not empty and its color is different from the current king's color
         if (!piece.isEmpty() && piece.color != this.color) {
           // Check if the piece can move to the king's position and if there is no piece blocking its way
+
           let validMove = piece.isValidMove(
             grid,
+            undefined,
             Piece.getA1Notation(row, col),
             Piece.getA1Notation(this.row, this.col)
           );
