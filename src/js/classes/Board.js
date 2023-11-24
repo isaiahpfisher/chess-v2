@@ -721,4 +721,25 @@ export class Board {
     }
     return totalMoves;
   }
+
+  generateValidMoves(color) {
+    let validMoves = [];
+
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        let piece = this.grid[row][col];
+        if (piece.color == this.turn) {
+          for (let subRow = 0; subRow < NUM_ROWS; subRow++) {
+            for (let subCol = 0; subCol < NUM_COLS; subCol++) {
+              let originId = Piece.getA1Notation(row, col);
+              let destId = Piece.getA1Notation(subRow, subCol);
+              if (this.board.isValidMove(color, originId, destId)) {
+                validMoves.push({ originId: originId, destId: destId });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
