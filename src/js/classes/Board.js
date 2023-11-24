@@ -471,4 +471,30 @@ export class Board {
 
     return true; // The current player is in checkmate.
   }
+
+  /**
+   * Counts the number of pieces on the grid that match the specified type and color.
+   *
+   * @param {string} type - The type of the pieces to count.
+   * @param {string} color - The color of the pieces to count.
+   * @returns {number} - The count of matching pieces.
+   */
+  countPieces(type, color) {
+    let count = 0;
+
+    // Traverse each row and column of the grid
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let col = 0; col < NUM_COLS; col++) {
+        // Check if the current piece matches the specified type and color
+        if (
+          this.grid[row][col].type == type &&
+          this.grid[row][col].color == color
+        ) {
+          count++;
+        }
+      }
+    }
+
+    return count;
+  }
 }
