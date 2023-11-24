@@ -287,6 +287,10 @@ export class Game {
           destId,
           this.capturedPieces
         );
+
+        // console.log("WHITE: " + this.board.evaluateBoard(WHITE));
+        // console.log("BLACK: " + this.board.evaluateBoard(BLACK));
+
         this.undoManager.push(undoFunction);
         this.turnCount++;
         this.turn = this.turn == WHITE ? BLACK : WHITE;

@@ -461,6 +461,43 @@ export class Board {
     return true; // The current player is in checkmate.
   }
 
+  evaluateBoard(color) {
+    let enemyColor = color == WHITE ? BLACK : WHITE;
+    let currentKing = this.findKing(color);
+    let enemyKing = this.findKing(color == WHITE ? BLACK : WHITE);
+    let score = 0;
+    score +=
+      9 *
+      (this.countPieces(QUEEN, color) - this.countPieces(QUEEN, enemyColor));
+    score +=
+      8 * (enemyKing.isInCheck(this.grid) - currentKing.isInCheck(this.grid));
+    score +=
+      5 * (this.countPieces(ROOK, color) - this.countPieces(ROOK, enemyColor));
+    score +=
+      3 *
+      (this.countPieces(BISHOP, color) - this.countPieces(BISHOP, enemyColor));
+    score +=
+      3 *
+      (this.countPieces(KNIGHT, color) - this.countPieces(KNIGHT, enemyColor));
+    score +=
+      1 * (this.countPieces(PAWN, color) - this.countPieces(PAWN, enemyColor));
+    score -=
+      0.5 *
+      (this.countBlockedPawns(color) - this.countBlockedPawns(enemyColor));
+    score -=
+      0.5 *
+      (this.countIsolatedPawns(color) - this.countIsolatedPawns(enemyColor));
+    score -=
+      0.5 *
+      (this.countDoubledPawns(color) - this.countDoubledPawns(enemyColor));
+    score +=
+      0.1 *
+      (this.countTotalLegalMoves(color) -
+        this.countTotalLegalMoves(enemyColor));
+
+    return score;
+  }
+
   /**
    * Counts the number of pieces on the grid that match the specified type and color.
    *
