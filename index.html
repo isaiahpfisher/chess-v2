@@ -535,8 +535,16 @@
 
             <!-- THEME PICKER -->
             <div class="bg-white rounded-md shadow p-4">
-              <fieldset>
+              <fieldset id="theme-picker">
                 <div class="flex items-center justify-evenly space-x-2">
+                  <!-- SLATE -->
+                  <label
+                    class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-2 ring-slate-500">
+                    <input type="radio" name="color-choice" value="Slate" class="sr-only"
+                      aria-labelledby="color-choice-4-label">
+                    <span aria-hidden="true"
+                      class="h-8 w-8 bg-slate-500 rounded-full border border-black border-opacity-10"></span>
+                  </label>
                   <!-- ROSE -->
                   <label
                     class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-rose-500">
@@ -556,7 +564,7 @@
                   <!-- YELLOW -->
                   <label
                     class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-yellow-500">
-                    <input type="radio" name="color-choice" value="Yellow" class="sr-only"
+                    <input type="radio" name="color-choice" value="Amber" class="sr-only"
                       aria-labelledby="color-choice-2-label">
                     <span aria-hidden="true"
                       class="h-8 w-8 bg-yellow-500 rounded-full border border-black border-opacity-10"></span>
@@ -584,14 +592,6 @@
                       aria-labelledby="color-choice-4-label">
                     <span aria-hidden="true"
                       class="h-8 w-8 bg-violet-500 rounded-full border border-black border-opacity-10"></span>
-                  </label>
-                  <!-- SLATE -->
-                  <label
-                    class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-slate-500">
-                    <input type="radio" name="color-choice" value="Slate" class="sr-only"
-                      aria-labelledby="color-choice-4-label">
-                    <span aria-hidden="true"
-                      class="h-8 w-8 bg-slate-500 rounded-full border border-black border-opacity-10"></span>
                   </label>
                 </div>
               </fieldset>
@@ -726,7 +726,7 @@
       </span>
       <!-- special move note (hidden by default) -->
       <span
-        class="special-move ml-1 hidden inline-flex items-center rounded-md bg-primary-50 px-2 py-1 text-xs font-bold text-primary-700 ring-1 ring-inset ring-primary-700/10"></span>
+        class="special-move ml-1 hidden inline-flex items-center rounded-md bg-primary-50 px-2 py-1 text-xs font-bold text-primary-700 ring-1 ring-inset ring-primary-500"></span>
       <!-- check (hidden by default) -->
       <span
         class="check hidden ml-1 inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-bold text-yellow-700 ring-1 ring-inset ring-yellow-600/10">Check</span>
