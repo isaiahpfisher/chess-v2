@@ -393,6 +393,8 @@
     <!-- GAME INFO -->
     <div class="w-1/2 max-h-[880px] ml-[25px]">
       <div class="game-info w-full min-w-[300px] min-h-[300px] h-[705px] flex flex-col">
+
+        <!-- STATS -->
         <div class="info">
           <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
 
@@ -422,12 +424,10 @@
                 <span class="text-sm text-gray-500" id="mode-description">Enable to play against a computer
                   opponent.</span>
               </span>
-              <!-- Enabled: "bg-primary-600", Not Enabled: "bg-gray-200" -->
               <button type="button" id="mode-toggle"
                 class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 bg-primary-600"
                 role="switch" aria-checked="false" aria-labelledby="availability-label"
                 aria-describedby="availability-description">
-                <!-- Enabled: "translate-x-5", Not Enabled: "translate-x-0" -->
                 <span aria-hidden="true" id="mode-toggle-span"
                   class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-5"></span>
               </button>
