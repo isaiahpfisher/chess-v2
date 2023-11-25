@@ -165,7 +165,7 @@ export class Game {
     // for game mode
     document
       .querySelector("#mode-toggle")
-      .addEventListener("click", this.changeGameMode.bind(this));
+      .addEventListener("click", this.changeGameMode);
   }
 
   /**
@@ -228,23 +228,14 @@ export class Game {
         "Enable to play against a computer opponent.";
     }
 
-    // loop through board and make black pieces draggable or not
-    for (let row = 0; row < NUM_ROWS; row++) {
-      for (let col = 0; col < NUM_COLS; col++) {
-        if (this.board.grid[row][col].color == BLACK) {
-          document
-            .getElementById(Piece.getA1Notation(row, col))
-            .querySelector("img").draggable = !Game.computerMode;
-        }
-      }
-    }
-
     // Check if it's the computer's turn and do the computer move
     if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
       setTimeout(() => {
         this.doComputerMove();
       }, 100);
     }
+
+    this.print();
   }
 
   setOrigin(cell) {
@@ -374,6 +365,7 @@ export class Game {
     if (this.board.isValidMove(this.turn, originId, destId)) {
       // Perform the move
       this.doMove(originId, destId, false); // simulation = false
+
       // Check if the game is over
       this.isOver();
     }

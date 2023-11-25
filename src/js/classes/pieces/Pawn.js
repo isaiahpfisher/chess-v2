@@ -140,14 +140,9 @@ export class Pawn extends Piece {
       } else {
         this.showPawnPromotion(grid);
       }
-      let newPawn = grid[row][col];
       undoFunction = () => {
         grid[row][col] = oldPawn;
       };
-
-      while (grid[endCoordinates.row][endCoordinates.col].type == PAWN) {
-        console.log("WAIT");
-      }
     }
 
     return undoFunction;
