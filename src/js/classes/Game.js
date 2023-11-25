@@ -280,37 +280,53 @@ export class Game {
   }
 
   /**
-   * Initiates a new move on the board.
-   * Runs when a chess piece is dropped on e.target cell.
-   * @param {Event} e
-   * @returns {void}
+   * Handles dropping a piece from one cell to another.
+   *
+   * @param {Event} e - The event object triggered by the drop.
    */
   dropPiece = (e) => {
-    // weird syntax so that this references the Game instance
     e.preventDefault();
+
+    // Get the ID of the cell where the piece was originally dragged from
     let originId = e.dataTransfer.getData("text");
+
+    // Get the ID of the cell where the piece is being dropped
     let destId = e.target.closest(".cell").id;
 
-    // check if actually making a move
-    if (originId != destId) {
-      // check if the move is valid
-      if (this.board.isValidMove(this.turn, originId, destId)) {
-        this.doMove(originId, destId, false); // simulation = false;
-        this.isOver();
-      }
-    }
-
+    // Remove the "border-primary-700" class from the destination cell
     document.getElementById(destId).classList.remove("border-primary-700");
 
+    // If the origin and destination IDs are different, process the input
+    if (originId !== destId) {
+      this.processInput(originId, destId);
+    }
+  };
+
+  /**
+   * Processes the input of a move from originId to destId.
+   *
+   * @param {string} originId - The ID of the origin cell.
+   * @param {string} destId - The ID of the destination cell.
+   */
+  processInput(originId, destId) {
+    // Check if the move is valid
+    if (this.board.isValidMove(this.turn, originId, destId)) {
+      // Perform the move
+      this.doMove(originId, destId, false); // simulation = false
+      // Check if the game is over
+      this.isOver();
+    }
+
+    // Print the current state of the game
     this.print();
 
-    // do computer move?
+    // Check if it's the computer's turn and do the computer move
     if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
       setTimeout(() => {
         this.doComputerMove();
       }, 0);
     }
-  };
+  }
 
   /**
    * Moves a piece from the origin square to the destination square.
