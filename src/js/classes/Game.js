@@ -151,6 +151,9 @@ export class Game {
       let newImg = img.cloneNode(true);
       img.parentNode.replaceChild(newImg, img);
 
+      newImg.addEventListener("click", this.clickSpace);
+      newImg.addEventListener("mouseover", this.hoverSpace);
+      newImg.addEventListener("mouseout", this.hoverEnd);
       newImg.addEventListener("drop", this.dropPiece);
       newImg.addEventListener("dragover", this.dragOverSpace);
       newImg.addEventListener("dragleave", this.dragLeaveSpace);
@@ -172,6 +175,9 @@ export class Game {
   removeEventListeners() {
     // for drag-and-drop
     document.querySelectorAll(".chessboard .row .cell").forEach((img) => {
+      img.removeEventListener("click", this.clickSpace);
+      img.removeEventListener("mouseover", this.hoverSpace);
+      img.removeEventListener("mouseout", this.hoverEnd);
       img.removeEventListener("drop", this.dropPiece);
       img.removeEventListener("dragover", this.dragOverSpace);
       img.removeEventListener("dragleave", this.dragLeaveSpace);
@@ -237,9 +243,48 @@ export class Game {
     if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
       setTimeout(() => {
         this.doComputerMove();
-      }, 0);
+      }, 100);
     }
   }
+
+  setOrigin(cell) {
+    cell.classList.add("origin", "!border-8", "!border-primary-700");
+  }
+
+  removeOrigin(cell) {
+    cell.classList.remove("origin", "!border-8", "!border-primary-700");
+  }
+
+  hoverSpace = (e) => {
+    let target = e.target.closest(".cell");
+
+    if (
+      document.querySelector(".origin") &&
+      !target.classList.contains("origin")
+    ) {
+      target.classList.add("!border-primary-700");
+    }
+  };
+
+  hoverEnd = (e) => {
+    let target = e.target.closest(".cell");
+    if (!target.classList.contains("origin")) {
+      target.classList.remove("!border-primary-700");
+    }
+  };
+
+  clickSpace = (e) => {
+    let target = e.target.closest(".cell");
+
+    if (target.classList.contains("origin")) {
+      this.removeOrigin(target);
+    } else if (document.querySelector(".origin")) {
+      this.processInput(document.querySelector(".origin").id, target.id);
+      this.removeOrigin(document.querySelector(".origin"));
+    } else if (target.querySelector("img").draggable) {
+      this.setOrigin(target);
+    }
+  };
 
   /**
    * Prevents default behavior when a chess piece is dragged over.
@@ -247,10 +292,10 @@ export class Game {
    * @param {Event} e
    * @returns {void}
    */
-  dragOverSpace(e) {
+  dragOverSpace = (e) => {
     e.preventDefault();
     e.target.closest(".cell").classList.add("!border-primary-700");
-  }
+  };
 
   /**
    * Runs when drag event stops.
@@ -258,9 +303,13 @@ export class Game {
    * @param {Event} e
    * @returns {void}
    */
-  dragEnd(e) {
+  dragEnd = (e) => {
     e.target.classList.remove("opacity-25");
-  }
+
+    if (document.querySelector(".origin")) {
+      this.removeOrigin(document.querySelector(".origin"));
+    }
+  };
 
   /**
    * Prevents default behavior when a dragged chess piece leaves a space on the chessboard.
@@ -268,10 +317,12 @@ export class Game {
    * @param {Event} e
    * @returns {void}
    */
-  dragLeaveSpace(e) {
+  dragLeaveSpace = (e) => {
     e.preventDefault();
-    e.target.closest(".cell").classList.remove("!border-primary-700");
-  }
+    if (!e.target.closest(".cell").classList.contains("origin")) {
+      e.target.closest(".cell").classList.remove("!border-primary-700");
+    }
+  };
 
   /**
    * Associates the id of the origin cell with the dragged element.
@@ -279,11 +330,12 @@ export class Game {
    * @param {Event} e
    * @returns {void}
    */
-  dragPieceStart(e) {
+  dragPieceStart = (e) => {
     e.dataTransfer.setData("text", e.target.closest(".cell").id);
     e.dataTransfer.effectAllowed = "move";
     e.target.closest(".cell").querySelector("img").classList.add("opacity-25");
-  }
+    this.setOrigin(e.target.closest(".cell"));
+  };
 
   /**
    * Handles dropping a piece from one cell to another.
@@ -299,7 +351,10 @@ export class Game {
     // Get the ID of the cell where the piece is being dropped
     let destId = e.target.closest(".cell").id;
 
-    // Remove the "border-primary-700" class from the destination cell
+    // Remove the "border-primary-700" class from the cells
+    document
+      .getElementById(originId)
+      .classList.remove("!border-primary-700", "!border-8");
     document.getElementById(destId).classList.remove("!border-primary-700");
 
     // If the origin and destination IDs are different, process the input
@@ -330,7 +385,7 @@ export class Game {
     if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
       setTimeout(() => {
         this.doComputerMove();
-      }, 0);
+      }, 100);
     }
   }
 

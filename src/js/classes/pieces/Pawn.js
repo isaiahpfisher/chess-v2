@@ -4,6 +4,7 @@ import {
   BLACK_DIRECTION,
   EMPTY,
   KNIGHT,
+  NUM_COLS,
   PAWN,
   QUEEN,
   ROOK,
@@ -128,7 +129,8 @@ export class Pawn extends Piece {
     }
 
     // handle pawn promotion
-    if (endCoordinates.row == (this.color == WHITE ? 7 : 0)) {
+    let promotionRow = this.color == WHITE ? 7 : 0;
+    if (endCoordinates.row == promotionRow) {
       let row = this.row;
       let col = this.col;
       let oldPawn = this;
@@ -142,6 +144,10 @@ export class Pawn extends Piece {
       undoFunction = () => {
         grid[row][col] = oldPawn;
       };
+
+      while (grid[endCoordinates.row][endCoordinates.col].type == PAWN) {
+        console.log("WAIT");
+      }
     }
 
     return undoFunction;

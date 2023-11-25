@@ -686,7 +686,11 @@ export class Board {
         ) {
           if ((color == WHITE && row == 0) || (color == BLACK && row == 7)) {
             totalCount++;
-          } else if (!this.grid[row + direction][col].isEmpty()) {
+          } else if (
+            row + direction >= 0 &&
+            row + direction <= 7 &&
+            !this.grid[row + direction][col].isEmpty()
+          ) {
             if (
               (col == 0 ||
                 this.grid[row + direction][col - 1].color != enemyColor) &&
