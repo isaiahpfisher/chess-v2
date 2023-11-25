@@ -232,6 +232,13 @@ export class Game {
         }
       }
     }
+
+    // Check if it's the computer's turn and do the computer move
+    if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
+      setTimeout(() => {
+        this.doComputerMove();
+      }, 0);
+    }
   }
 
   /**
