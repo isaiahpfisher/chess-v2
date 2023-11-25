@@ -5,7 +5,7 @@ import { Piece } from "./Piece.js";
  * Represents a game of chess.
  */
 export class Game {
-  static computerMode = false;
+  static computerMode = true;
   static lastCapture = 0;
   static invalidMessage = "";
   static moveHistory = [];
@@ -27,7 +27,6 @@ export class Game {
     Game.lastCapture = 0;
     Game.invalidMessage = "";
     Game.moveHistory = [];
-    this.changeGameMode();
     this.print();
   }
 
@@ -243,7 +242,7 @@ export class Game {
    */
   dragOverSpace(e) {
     e.preventDefault();
-    e.target.closest(".cell").classList.add("border-primary-700");
+    e.target.closest(".cell").classList.add("!border-primary-700");
   }
 
   /**
@@ -264,7 +263,7 @@ export class Game {
    */
   dragLeaveSpace(e) {
     e.preventDefault();
-    e.target.closest(".cell").classList.remove("border-primary-700");
+    e.target.closest(".cell").classList.remove("!border-primary-700");
   }
 
   /**
@@ -294,7 +293,7 @@ export class Game {
     let destId = e.target.closest(".cell").id;
 
     // Remove the "border-primary-700" class from the destination cell
-    document.getElementById(destId).classList.remove("border-primary-700");
+    document.getElementById(destId).classList.remove("!border-primary-700");
 
     // If the origin and destination IDs are different, process the input
     if (originId !== destId) {
@@ -534,6 +533,7 @@ export class Game {
     if (this.gameOver) {
       this.showGameOver();
       document.getElementById("game-over-card").classList.remove("hidden");
+      Game.invalidMessage = "";
       this.print();
       this.changeGameMode();
       this.removeEventListeners();
