@@ -1,4 +1,12 @@
-import { BLACK, Board, EMPTY, NUM_COLS, NUM_ROWS, WHITE } from "./Board.js";
+import {
+  BLACK,
+  Board,
+  EMPTY,
+  NUM_COLS,
+  NUM_ROWS,
+  PAWN,
+  WHITE,
+} from "./Board.js";
 import { Piece } from "./Piece.js";
 
 /**
@@ -322,11 +330,30 @@ export class Game {
     // Print the current state of the game
     this.print();
 
+    this.waitForPawnPromotion(destId, this.postMove.bind(this));
+  }
+
+  postMove() {
+    this.print();
     // Check if it's the computer's turn and do the computer move
     if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
       setTimeout(() => {
         this.doComputerMove();
       }, 100);
+    }
+  }
+
+  waitForPawnPromotion(destId, callback) {
+    let endCoordinates = Piece.getCoordinates(destId);
+    let row = endCoordinates.row;
+    let col = endCoordinates.col;
+    let piece = this.board.grid[row][col];
+
+    let waitingForPromotion = (row == 0 || row == 7) && piece.type == PAWN;
+    if (waitingForPromotion) {
+      setTimeout(() => this.waitForPawnPromotion(destId, callback), 100);
+    } else {
+      callback();
     }
   }
 
