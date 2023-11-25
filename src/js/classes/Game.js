@@ -293,21 +293,23 @@ export class Game {
 
     // check if actually making a move
     if (originId != destId) {
+      // check if the move is valid
       if (this.board.isValidMove(this.turn, originId, destId)) {
         this.doMove(originId, destId, false); // simulation = false;
-        this.print();
         this.isOver();
-      } else {
-        this.print();
-      }
-
-      // do computer move?
-      if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
-        this.doComputerMove();
       }
     }
 
     document.getElementById(destId).classList.remove("border-primary-700");
+
+    this.print();
+
+    // do computer move?
+    if (!this.gameOver && Game.computerMode && this.turn == BLACK) {
+      setTimeout(() => {
+        this.doComputerMove();
+      }, 0);
+    }
   };
 
   /**
@@ -383,7 +385,6 @@ export class Game {
       // If the initial score is greater than 1000 (checkmate), return the black move
       if (initialScore > 1000) {
         this.undo();
-        console.log("Checkmate");
         return blackMove;
       }
 
@@ -425,8 +426,6 @@ export class Game {
       // Undo the black move
       this.undo();
     }
-
-    console.log(bestBlackMove);
 
     // Return the best black move
     return bestBlackMove;
@@ -637,6 +636,5 @@ export class Game {
     this.turn = this.turn == WHITE ? BLACK : WHITE;
     this.boardHistory.pop();
     // Game.moveHistory.shift();
-    this.print();
   }
 }
