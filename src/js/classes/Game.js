@@ -198,8 +198,7 @@ export class Game {
    *
    * @param {Event} e - The event object triggered by the mode change.
    */
-  changeGameMode(e) {
-    console.log(this);
+  changeGameMode = (e) => {
     Game.toggleComputerMode();
 
     // Toggle background colors
@@ -229,9 +228,7 @@ export class Game {
         this.doComputerMove();
       }, 100);
     }
-
-    this.print();
-  }
+  };
 
   /**
    * Prevents default behavior when a chess piece is dragged over.
