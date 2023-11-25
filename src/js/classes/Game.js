@@ -151,9 +151,6 @@ export class Game {
       let newImg = img.cloneNode(true);
       img.parentNode.replaceChild(newImg, img);
 
-      newImg.addEventListener("click", this.clickSpace);
-      newImg.addEventListener("mouseover", this.hoverSpace);
-      newImg.addEventListener("mouseout", this.hoverEnd);
       newImg.addEventListener("drop", this.dropPiece);
       newImg.addEventListener("dragover", this.dragOverSpace);
       newImg.addEventListener("dragleave", this.dragLeaveSpace);
@@ -175,9 +172,6 @@ export class Game {
   removeEventListeners() {
     // for drag-and-drop
     document.querySelectorAll(".chessboard .row .cell").forEach((img) => {
-      img.removeEventListener("click", this.clickSpace);
-      img.removeEventListener("mouseover", this.hoverSpace);
-      img.removeEventListener("mouseout", this.hoverEnd);
       img.removeEventListener("drop", this.dropPiece);
       img.removeEventListener("dragover", this.dragOverSpace);
       img.removeEventListener("dragleave", this.dragLeaveSpace);
@@ -205,6 +199,7 @@ export class Game {
    * @param {Event} e - The event object triggered by the mode change.
    */
   changeGameMode(e) {
+    console.log(this);
     Game.toggleComputerMode();
 
     // Toggle background colors
@@ -237,45 +232,6 @@ export class Game {
 
     this.print();
   }
-
-  setOrigin(cell) {
-    cell.classList.add("origin", "!border-8", "!border-primary-700");
-  }
-
-  removeOrigin(cell) {
-    cell.classList.remove("origin", "!border-8", "!border-primary-700");
-  }
-
-  hoverSpace = (e) => {
-    let target = e.target.closest(".cell");
-
-    if (
-      document.querySelector(".origin") &&
-      !target.classList.contains("origin")
-    ) {
-      target.classList.add("!border-primary-700");
-    }
-  };
-
-  hoverEnd = (e) => {
-    let target = e.target.closest(".cell");
-    if (!target.classList.contains("origin")) {
-      target.classList.remove("!border-primary-700");
-    }
-  };
-
-  clickSpace = (e) => {
-    let target = e.target.closest(".cell");
-
-    if (target.classList.contains("origin")) {
-      this.removeOrigin(target);
-    } else if (document.querySelector(".origin")) {
-      this.processInput(document.querySelector(".origin").id, target.id);
-      this.removeOrigin(document.querySelector(".origin"));
-    } else if (target.querySelector("img").draggable) {
-      this.setOrigin(target);
-    }
-  };
 
   /**
    * Prevents default behavior when a chess piece is dragged over.
@@ -325,7 +281,6 @@ export class Game {
     e.dataTransfer.setData("text", e.target.closest(".cell").id);
     e.dataTransfer.effectAllowed = "move";
     e.target.closest(".cell").querySelector("img").classList.add("opacity-25");
-    this.setOrigin(e.target.closest(".cell"));
   };
 
   /**
@@ -343,9 +298,6 @@ export class Game {
     let destId = e.target.closest(".cell").id;
 
     // Remove the "border-primary-700" class from the cells
-    document
-      .getElementById(originId)
-      .classList.remove("!border-primary-700", "!border-8");
     document.getElementById(destId).classList.remove("!border-primary-700");
 
     // If the origin and destination IDs are different, process the input
