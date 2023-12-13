@@ -13,7 +13,7 @@ export class Knight extends Piece {
    */
   constructor(color, row, col) {
     super(KNIGHT, color, row, col);
-    this.imgSrc = `./assets/${color}-knight.svg`; // Set the image source for the Knight based on its color
+    this.imgSrc = `assets/${color}-knight.svg`; // Set the image source for the Knight based on its color
   }
 
   /**

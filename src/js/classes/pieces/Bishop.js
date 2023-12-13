@@ -14,7 +14,7 @@ export class Bishop extends Piece {
    */
   constructor(color, row, col) {
     super(BISHOP, color, row, col);
-    this.imgSrc = `./assets/${color}-bishop.svg`; // Set the image source for the Bishop based on its color
+    this.imgSrc = `assets/${color}-bishop.svg`; // Set the image source for the Bishop based on its color
   }
 
   /**

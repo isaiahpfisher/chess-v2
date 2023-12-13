@@ -64,7 +64,7 @@ export class Game {
         whiteContainer.innerHTML += `<img draggable="false" src="${f}">`;
       });
     } else {
-      whiteContainer.innerHTML = `<img draggable="false" src="./assets/white-pawn.svg">`;
+      whiteContainer.innerHTML = `<img draggable="false" src="assets/white-pawn.svg">`;
       whiteContainer.querySelector("img").classList.add("invisible");
     }
 
@@ -75,7 +75,7 @@ export class Game {
       });
     } else {
       blackContainer.innerHTML =
-        '<img draggable="false" src="./assets/black-pawn.svg">';
+        '<img draggable="false" src="assets/black-pawn.svg">';
       blackContainer.querySelector("img").classList.add("invisible");
     }
 
