@@ -32,7 +32,7 @@ export class Pawn extends Piece {
 
   constructor(board, color, row, col) {
     super(PAWN, color, row, col);
-    this.imgSrc = `assets/${color}-pawn.svg`; // Set the image source for the Pawn based on its color
+    this.imgSrc = `assets/${color.toLowerCase()}-pawn.svg`; // Set the image source for the Pawn based on its color
     this.enPassant = false;
     this.promotionSelection = QUEEN;
     this.board = board;

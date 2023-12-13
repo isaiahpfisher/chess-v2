@@ -13,7 +13,7 @@ export class Queen extends Piece {
    */
   constructor(color, row, col) {
     super(QUEEN, color, row, col);
-    this.imgSrc = `assets/${color}-queen.svg`; // Set the image source for the Queen based on its color
+    this.imgSrc = `assets/${color.toLowerCase()}-queen.svg`; // Set the image source for the Queen based on its color
   }
 
   /**

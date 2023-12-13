@@ -13,7 +13,7 @@ export class Rook extends Piece {
    */
   constructor(color, row, col) {
     super(ROOK, color, row, col);
-    this.imgSrc = `assets/${color}-rook.svg`; // Set the image source for the Rook based on its color
+    this.imgSrc = `assets/${color.toLowerCase()}-rook.svg`; // Set the image source for the Rook based on its color
   }
 
   /**

@@ -23,7 +23,7 @@ export class King extends Piece {
    */
   constructor(color, row, col) {
     super(KING, color, row, col);
-    this.imgSrc = `assets/${color}-king.svg`; // Set the image source for the King based on its color
+    this.imgSrc = `assets/${color.toLowerCase()}-king.svg`; // Set the image source for the King based on its color
   }
 
   isInCheck() {
