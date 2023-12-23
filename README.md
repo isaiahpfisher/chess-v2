@@ -1,6 +1,6 @@
 # Chess
 ### Info
-- This is my first somewhat significant web development project. It was derived from a [C++ version](https://github.com/isaiahpfisher/chess) made with [Jaxen Roden](https://github.com/jaxenroden).
+- This is my first somewhat significant web development project. It was derived from a [C++ version](https://github.com/isaiahpfisher/chess-console) made with [Jaxen Roden](https://github.com/jaxenroden).
 - The project is Vanilla JS and styled with Tailwind.
 - It was bootstrapped with Vite and deployed with Vercel.
 ### Features
