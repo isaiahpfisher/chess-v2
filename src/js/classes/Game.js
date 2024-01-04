@@ -1,12 +1,4 @@
-import {
-  BLACK,
-  Board,
-  EMPTY,
-  NUM_COLS,
-  NUM_ROWS,
-  PAWN,
-  WHITE,
-} from "./Board.js";
+import { BLACK, Board, EMPTY, NUM_COLS, NUM_ROWS, PAWN, WHITE } from "./Board.js";
 import { Piece } from "./Piece.js";
 
 /**
@@ -45,18 +37,16 @@ export class Game {
     this.board.print(this.turn);
 
     // basic stats
-    document.getElementById("to-move").textContent =
-      this.turn[0].toUpperCase() + this.turn.substring(1);
+    document.getElementById("to-move").textContent = this.turn[0].toUpperCase() + this.turn.substring(1);
     document.getElementById("turn-count").textContent = this.turnCount;
-    document.getElementById("turns-since-capture").textContent =
-      Game.lastCapture;
+    document.getElementById("turns-since-capture").textContent = Game.lastCapture;
 
     // captured pieces
     let whiteContainer = document.getElementById("white-captured-pieces");
     let blackContainer = document.getElementById("black-captured-pieces");
 
-    let whitePieces = this.capturedPieces.filter((f) => f.includes(WHITE));
-    let blackPieces = this.capturedPieces.filter((f) => f.includes(BLACK));
+    let whitePieces = this.capturedPieces.filter((f) => f.toLowerCase().includes(WHITE.toLowerCase()));
+    let blackPieces = this.capturedPieces.filter((f) => f.toLowerCase().includes(BLACK.toLowerCase()));
 
     if (whitePieces.length > 0) {
       whiteContainer.innerHTML = "";
@@ -74,8 +64,7 @@ export class Game {
         blackContainer.innerHTML += `<img draggable="false" src="${f}">`;
       });
     } else {
-      blackContainer.innerHTML =
-        '<img draggable="false" src="assets/black-pawn.svg">';
+      blackContainer.innerHTML = '<img draggable="false" src="assets/black-pawn.svg">';
       blackContainer.querySelector("img").classList.add("invisible");
     }
 
@@ -88,17 +77,13 @@ export class Game {
       // Clone template content
       let item = template.content.cloneNode(true);
 
-      item.querySelector(".turn-number").innerText =
-        Game.moveHistory.length - turn;
+      item.querySelector(".turn-number").innerText = Game.moveHistory.length - turn;
 
       item.querySelector(".start-piece img").src = move.startPiece.imgSrc;
-      item.querySelector(
-        ".coordinates"
-      ).innerText = `${move.originId} to ${move.destId}`;
+      item.querySelector(".coordinates").innerText = `${move.originId} to ${move.destId}`;
 
       if (move.capturedPiece.type != EMPTY) {
-        item.querySelector(".captured-piece img").src =
-          move.capturedPiece.imgSrc;
+        item.querySelector(".captured-piece img").src = move.capturedPiece.imgSrc;
         item.querySelector(".captured-piece").classList.remove("hidden");
       }
 
@@ -123,17 +108,14 @@ export class Game {
     let lastMove = Game.moveHistory[0];
     if (Game.invalidMessage != "") {
       document.getElementById("invalid-alert").classList.remove("hidden");
-      document.getElementById("invalid-message").textContent =
-        Game.invalidMessage;
+      document.getElementById("invalid-message").textContent = Game.invalidMessage;
     } else {
       document.getElementById("invalid-alert").classList.add("hidden");
     }
 
     if (!this.gameOver && lastMove && lastMove.check) {
       document.getElementById("check-alert").classList.remove("hidden");
-      document.getElementById(
-        "check-message"
-      ).textContent = `${this.turn}'s king is in danger. Can you save him?`;
+      document.getElementById("check-message").textContent = `${this.turn}'s king is in danger. Can you save him?`;
     } else {
       document.getElementById("check-alert").classList.add("hidden");
     }
@@ -168,9 +150,7 @@ export class Game {
     });
 
     // for game mode
-    document
-      .querySelector("#mode-toggle")
-      .addEventListener("click", this.changeGameMode);
+    document.querySelector("#mode-toggle").addEventListener("click", this.changeGameMode);
   }
 
   /**
@@ -189,9 +169,7 @@ export class Game {
     });
 
     // for game mode
-    document
-      .querySelector("#mode-toggle")
-      .removeEventListener("click", this.changeGameMode.bind(this));
+    document.querySelector("#mode-toggle").removeEventListener("click", this.changeGameMode.bind(this));
   }
 
   /**
@@ -214,20 +192,14 @@ export class Game {
     document.getElementById("mode-toggle").classList.toggle("bg-gray-200");
 
     // Toggle translation effect
-    document
-      .getElementById("mode-toggle-span")
-      .classList.toggle("translate-x-5");
-    document
-      .getElementById("mode-toggle-span")
-      .classList.toggle("translate-x-0");
+    document.getElementById("mode-toggle-span").classList.toggle("translate-x-5");
+    document.getElementById("mode-toggle-span").classList.toggle("translate-x-0");
 
     // Update mode description based on the current game mode
     if (Game.computerMode) {
-      document.getElementById("mode-description").textContent =
-        "Disable to play with a friend.";
+      document.getElementById("mode-description").textContent = "Disable to play with a friend.";
     } else {
-      document.getElementById("mode-description").textContent =
-        "Enable to play against a computer opponent.";
+      document.getElementById("mode-description").textContent = "Enable to play against a computer opponent.";
     }
 
     // Check if it's the computer's turn and do the computer move
@@ -367,12 +339,7 @@ export class Game {
    */
   doMove(originId, destId, simulation) {
     // make the move and save the undo function
-    let undoFunction = this.board.move(
-      originId,
-      destId,
-      this.capturedPieces,
-      simulation
-    );
+    let undoFunction = this.board.move(originId, destId, this.capturedPieces, simulation);
 
     // add the undo function to the undo manager
     this.undoManager.push(undoFunction);
