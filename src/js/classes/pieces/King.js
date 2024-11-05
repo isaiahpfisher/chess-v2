@@ -162,7 +162,7 @@ export class King extends Piece {
         if (
           !piece.isEmpty() &&
           piece.color != this.color &&
-          piece.type != KING
+          // piece.type != KING
         ) {
           // Check if the piece can move to the king's position and if there is no piece blocking its way
 
