@@ -161,8 +161,8 @@ export class King extends Piece {
         // Check if the piece is not empty and its color is different from the current king's color
         if (
           !piece.isEmpty() &&
-          piece.color != this.color &&
-          // piece.type != KING
+          piece.color != this.color
+          // && piece.type != KING
         ) {
           // Check if the piece can move to the king's position and if there is no piece blocking its way
 
